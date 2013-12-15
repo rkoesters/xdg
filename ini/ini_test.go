@@ -45,7 +45,7 @@ hello world!
 func TestInvalid(t *testing.T) {
 	r := strings.NewReader(testFileInvalid)
 	_, err := New(r)
-	if err == nil {
+	if err.Error() != "invalid format" {
 		t.Fail()
 	}
 }
