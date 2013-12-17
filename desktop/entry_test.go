@@ -1,8 +1,8 @@
 package desktop
 
 import (
-	"testing"
 	"strings"
+	"testing"
 )
 
 // specExample is the example desktop file given in the spec.
@@ -38,13 +38,13 @@ func TestSpecExample(t *testing.T) {
 		t.Error("Type")
 	}
 
-	arr := map[string]string {
+	arr := map[string]string{
 		d.Version(): "1.0",
-		d.Name(): "Foo Viewer",
+		d.Name():    "Foo Viewer",
 		d.Comment(): "The best viewer for Foo objects available!",
 		d.TryExec(): "fooview",
-		d.Exec(): "fooview %F",
-		d.Icon(): "fooview",
+		d.Exec():    "fooview %F",
+		d.Icon():    "fooview",
 	}
 	for act, exp := range arr {
 		if act != exp {
