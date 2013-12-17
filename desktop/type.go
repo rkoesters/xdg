@@ -4,15 +4,18 @@ package desktop
 type Type uint8
 
 const (
-	Unknown Type = iota
+	None Type = iota // No type. This is bad.
 	Application
 	Link
 	Directory
+	Unknown // Any unknown type.
 )
 
 // ParseType converts the given string s into a Type.
 func ParseType(s string) Type {
 	switch s {
+	case None.String():
+		return None
 	case Application.String():
 		return Application
 	case Link.String():
@@ -27,6 +30,8 @@ func ParseType(s string) Type {
 // String returns the Type as a string.
 func (t Type) String() string {
 	switch t {
+	case None:
+		return ""
 	case Application:
 		return "Application"
 	case Link:

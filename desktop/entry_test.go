@@ -34,22 +34,22 @@ func TestSpecExample(t *testing.T) {
 		t.Error(err)
 	}
 
-	if d.Type() != Application {
+	if d.Type != Application {
 		t.Error("Type")
 	}
 
-	arr := map[Key]string{
-		Version: "1.0",
-		Name:    "Foo Viewer",
-		Comment: "The best viewer for Foo objects available!",
-		TryExec: "fooview",
-		Exec:    "fooview %F",
-		Icon:    "fooview",
+	arr := map[string]string{
+		d.Version: "1.0",
+		d.Name:    "Foo Viewer",
+		d.Comment: "The best viewer for Foo objects available!",
+		d.TryExec: "fooview",
+		d.Exec:    "fooview %F",
+		d.Icon:    "fooview",
 	}
-	for k, exp := range arr {
-		if d.String(k) != exp {
+	for act, exp := range arr {
+		if act != exp {
 			t.Log("expected: " + exp)
-			t.Log("actual:   " + d.String(k))
+			t.Log("actual:   " + act)
 			t.Fail()
 		}
 	}
@@ -61,20 +61,20 @@ func TestActions(t *testing.T) {
 		t.Error(err)
 	}
 
-	acts := d.Actions()
-	if acts[0].Name != "Browse Gallery" {
+	a := d.Actions
+	if a[0].Name != "Browse Gallery" {
 		t.Fail()
 	}
-	if acts[0].Exec != "fooview --gallery" {
+	if a[0].Exec != "fooview --gallery" {
 		t.Fail()
 	}
-	if acts[1].Name != "Create a new Foo!" {
+	if a[1].Name != "Create a new Foo!" {
 		t.Fail()
 	}
-	if acts[1].Exec != "fooview --create-new" {
+	if a[1].Exec != "fooview --create-new" {
 		t.Fail()
 	}
-	if acts[1].Icon != "fooview-new" {
+	if a[1].Icon != "fooview-new" {
 		t.Fail()
 	}
 }

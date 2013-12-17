@@ -12,89 +12,89 @@ var (
 	ErrMissingURL  = errors.New("missing entry url")
 )
 
-const dent = "Desktop Entry"
-
-type Key string
-
-const (
-	Version         Key = "Version"
-	Name                = "Name"
-	GenericName         = "GenericName"
-	NoDisplay           = "NoDisplay"
-	Comment             = "Comment"
-	Icon                = "Icon"
-	Hidden              = "Hidden"
-	OnlyShowin          = "OnlyShowIn"
-	NotShowIn           = "NotShowIn"
-	DBusActivatable     = "DBusActivatable"
-	TryExec             = "TryExec"
-	Exec                = "Exec"
-	Path                = "Path"
-	Terminal            = "Terminal"
-	Actions             = "Actions"
-	MimeType            = "MimeType"
-	Categories          = "Categories"
-	Keywords            = "Keywords"
-	StartupNotify       = "StartupNotify"
-	StartupWMClass      = "StartupWMClass"
-	URL                 = "URL"
-)
-
 // Entry represents a desktop entry file.
 //
 // TODO: consider using struct members instead of a map.
 type Entry struct {
-	m ini.Map
+	Type    Type
+	Version string
+
+	Name        string
+	GenericName string
+	Comment     string
+	Icon        string
+	URL         string
+
+	NoDisplay  bool
+	Hidden     bool
+	OnlyShowIn []string
+	NotShowIn  []string
+
+	DBusActivatable bool
+	TryExec         string
+	Exec            string
+	Path            string
+	Terminal        bool
+
+	Actions    []*Action
+	MimeType   []string
+	Categories []string
+	Keywords   []string
+
+	StartupNotify  bool
+	StartupWMClass string
+
+	// Extended pairs (X-PRODUCT-Key).
+	// TODO: implement X.
+	X map[string]map[string]string
 }
 
+const dent = "Desktop Entry"
+
 func New(r io.Reader) (*Entry, error) {
-	dfile, err := ini.New(r)
+	m, err := ini.New(r)
 	if err != nil {
 		return nil, err
 	}
 
-	e := &Entry{dfile}
+	// Create the entry.
+	e := &Entry{
+		Type:            ParseType(m.Get(dent, "Type")),
+		Version:         m.Get(dent, "Version"),
+		Name:            m.Get(dent, "Name"),
+		GenericName:     m.Get(dent, "GenericName"),
+		Comment:         m.Get(dent, "Comment"),
+		Icon:            m.Get(dent, "Icon"),
+		URL:             m.Get(dent, "URL"),
+		NoDisplay:       m.Bool(dent, "NoDisplay"),
+		Hidden:          m.Bool(dent, "Hidden"),
+		OnlyShowIn:      m.List(dent, "OnlyShowIn"),
+		NotShowIn:       m.List(dent, "NotShowIn"),
+		DBusActivatable: m.Bool(dent, "DBusActivatable"),
+		TryExec:         m.Get(dent, "TryExec"),
+		Exec:            m.Get(dent, "Exec"),
+		Path:            m.Get(dent, "Path"),
+		Terminal:        m.Bool(dent, "Terminal"),
+		Actions:         getActions(m),
+		MimeType:        m.List(dent, "MimeType"),
+		Categories:      m.List(dent, "Categories"),
+		Keywords:        m.List(dent, "Keywords"),
+		StartupNotify:   m.Bool(dent, "StartupNotify"),
+		StartupWMClass:  m.Get(dent, "StartupWMClass"),
+		X:               make(map[string]map[string]string),
+	}
 
-	// Check that the desktop file is valid.
-	_, ok := e.m[dent]["Type"]
-	if !ok {
+	// Validate the entry.
+	if e.Type == None {
 		return nil, ErrMissingType
 	}
-	switch e.Type() {
-	case Link:
-		_, ok = e.m[dent]["URL"]
-		if !ok {
-			return nil, ErrMissingURL
-		}
-		fallthrough
-	case Application, Directory:
-		_, ok = e.m[dent]["Name"]
-		if !ok {
-			return nil, ErrMissingName
-		}
+	if e.Type > None && e.Type < Unknown && e.Name == "" {
+		return nil, ErrMissingName
+	}
+	if e.Type == Link && e.URL == "" {
+		return nil, ErrMissingURL
 	}
 	return e, nil
-}
-
-func (e *Entry) Type() Type {
-	return ParseType(e.m.Get(dent, "Type"))
-}
-
-func (e *Entry) HasKey(k Key) bool {
-	_, b := e.m[dent][string(k)]
-	return b
-}
-
-func (e *Entry) String(k Key) string {
-	return e.m.Get(dent, string(k))
-}
-
-func (e *Entry) Bool(k Key) bool {
-	return e.m.Bool(dent, string(k))
-}
-
-func (e *Entry) List(k Key) []string {
-	return e.m.List(dent, string(k))
 }
 
 // Action is an Action group.
@@ -104,15 +104,15 @@ type Action struct {
 	Exec string
 }
 
-func (e *Entry) Actions() []*Action {
+func getActions(m ini.Map) []*Action {
 	var acts []*Action
 
-	for _, a := range e.m.List(dent, string(Actions)) {
+	for _, a := range m.List(dent, "Actions") {
 		g := "Desktop Action " + a
 		acts = append(acts, &Action{
-			Name: e.m.Get(g, string(Name)),
-			Icon: e.m.Get(g, string(Icon)),
-			Exec: e.m.Get(g, string(Exec)),
+			Name: m.Get(g, "Name"),
+			Icon: m.Get(g, "Icon"),
+			Exec: m.Get(g, "Exec"),
 		})
 	}
 	return acts
