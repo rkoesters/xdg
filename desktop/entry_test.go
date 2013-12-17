@@ -54,3 +54,27 @@ func TestSpecExample(t *testing.T) {
 		}
 	}
 }
+
+func TestActions(t *testing.T) {
+	d, err := New(strings.NewReader(specExample))
+	if err != nil {
+		t.Error(err)
+	}
+
+	acts := d.Actions()
+	if acts[0].Name != "Browse Gallery" {
+		t.Fail()
+	}
+	if acts[0].Exec != "fooview --gallery" {
+		t.Fail()
+	}
+	if acts[1].Name != "Create a new Foo!" {
+		t.Fail()
+	}
+	if acts[1].Exec != "fooview --create-new" {
+		t.Fail()
+	}
+	if acts[1].Icon != "fooview-new" {
+		t.Fail()
+	}
+}

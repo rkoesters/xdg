@@ -31,6 +31,7 @@ const (
 	Exec                = "Exec"
 	Path                = "Path"
 	Terminal            = "Terminal"
+	Actions = "Actions"
 	MimeType            = "MimeType"
 	Categories          = "Categories"
 	Keywords            = "Keywords"
@@ -87,4 +88,25 @@ func (e *Entry) Bool(k Key) bool {
 
 func (e *Entry) List(k Key) []string {
 	return e.m.List(dent, string(k))
+}
+
+// Action is a Action group.
+type Action struct {
+	Name string
+	Icon string
+	Exec string
+}
+
+func (e *Entry) Actions() []*Action {
+	var acts []*Action
+
+	for _, a := range e.m.List(dent, string(Actions)) {
+		g := "Desktop Action " + a
+		acts = append(acts, &Action{
+			Name: e.m.Get(g, string(Name)),
+			Icon: e.m.Get(g, string(Icon)),
+			Exec: e.m.Get(g, string(Exec)),
+		})
+	}
+	return acts
 }
