@@ -1,6 +1,7 @@
 package ini
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -17,8 +18,7 @@ man = bear = pig
 `
 
 func TestParser(t *testing.T) {
-	r := strings.NewReader(testFile)
-	m, err := New(r)
+	m, err := New(strings.NewReader(testParser))
 	if err != nil {
 		t.Error(err)
 	}
@@ -43,9 +43,46 @@ hello world!
 `
 
 func TestInvalid(t *testing.T) {
-	r := strings.NewReader(testInvalid)
-	_, err := New(r)
+	_, err := New(strings.NewReader(testInvalid))
 	if err.Error() != "invalid format" {
+		t.Fail()
+	}
+}
+
+const testFormat = `
+# This tests that the formatting functions work.
+[Header 1]
+yes=true
+no=false
+
+list=man;bear;pig;
+`
+
+func TestBool(t *testing.T) {
+	m, err := New(strings.NewReader(testFormat))
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(m)
+
+	if m.Bool("Header 1", "yes") != true {
+		t.Fail()
+	}
+	if m.Bool("Header 1", "no") != false {
+		t.Fail()
+	}
+}
+
+func TestList(t *testing.T) {
+	m, err := New(strings.NewReader(testFormat))
+	if err != nil {
+		t.Error(err)
+	}
+	expect := []string{"man", "bear", "pig"}
+	actual := m.List("Header 1", "list")
+	t.Log(expect)
+	t.Log(actual)
+	if !reflect.DeepEqual(actual, expect) {
 		t.Fail()
 	}
 }
