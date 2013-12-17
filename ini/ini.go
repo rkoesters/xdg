@@ -12,13 +12,16 @@ import (
 
 // Map is a map of a map of strings. The first string is the header
 // section and the second is the key.
-type Map map[string]map[string]string
+type Map struct {
+	M map[string]map[string]string
+}
 
 // New creates a new Map and returns it.
-func New(r io.Reader) (Map, error) {
-	m := make(Map)
+func New(r io.Reader) (*Map, error) {
+	m := new(Map)
+	m.M = make(map[string]map[string]string)
 	hdr := "default"
-	m[hdr] = make(map[string]string)
+	m.M[hdr] = make(map[string]string)
 
 	sc := bufio.NewScanner(r)
 	for sc.Scan() {
@@ -31,13 +34,13 @@ func New(r io.Reader) (Map, error) {
 		case line[0:1] == "[" && line[len(line)-1:] == "]":
 			// New section.
 			hdr = line[1 : len(line)-1]
-			m[hdr] = make(map[string]string)
+			m.M[hdr] = make(map[string]string)
 		case strings.Contains(line, "="):
 			// Key=Value pair.
 			p := strings.SplitN(line, "=", 2)
 			p[0] = strings.TrimSpace(p[0])
 			p[1] = strings.TrimSpace(p[1])
-			m[hdr][p[0]] = p[1]
+			m.M[hdr][p[0]] = p[1]
 		default:
 			return nil, errors.New("invalid format")
 		}
@@ -47,18 +50,18 @@ func New(r io.Reader) (Map, error) {
 
 // Get returns the value with the given group and key. This function is
 // here because underlying data structure of Map may change.
-func (m Map) Get(g, k string) string {
-	return m[g][k]
+func (m *Map) Get(g, k string) string {
+	return m.M[g][k]
 }
 
 // Bool returns the value as a bool.
-func (m Map) Bool(g, k string) bool {
+func (m *Map) Bool(g, k string) bool {
 	b, _ := strconv.ParseBool(m.Get(g, k))
 	return b
 }
 
 // List returns the value as a slice of strings.
-func (m Map) List(g, k string) []string {
+func (m *Map) List(g, k string) []string {
 	l := strings.Split(m.Get(g, k), ";")
 	for i := 0; i < len(l); i++ {
 		if l[i] == "" {
