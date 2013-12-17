@@ -45,7 +45,12 @@ type Entry struct {
 	StartupNotify  bool
 	StartupWMClass string
 
-	// Extended pairs (X-PRODUCT-Key).
+	// Extended pairs. These are all of the key=value pairs in which
+	// the key follows the format X-PRODUCT-KEY. For example,
+	// accessing X-Unity-IconBackgroundColor can be done with:
+	//
+	//	entry.X["Unity"]["IconBackgroundColor"]
+	//
 	X map[string]map[string]string
 }
 
