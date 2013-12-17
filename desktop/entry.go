@@ -90,7 +90,7 @@ func (e *Entry) List(k Key) []string {
 	return e.m.List(dent, string(k))
 }
 
-// Action is a Action group.
+// Action is an Action group.
 type Action struct {
 	Name string
 	Icon string
