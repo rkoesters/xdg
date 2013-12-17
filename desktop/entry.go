@@ -2,9 +2,9 @@ package desktop
 
 import (
 	"errors"
-	"fmt"
 	"github.com/rkoesters/xdg/ini"
 	"io"
+	"strings"
 )
 
 var (
@@ -96,17 +96,15 @@ func New(r io.Reader) (*Entry, error) {
 	}
 
 	// Search for extended keys.
-	var prod string
-	var key string
-	// TODO: add support for extend groups.
-	for _, gv := range m.M {
-		for k, v := range gv {
-			n, _ := fmt.Sscanf(k, "X-%v-%v", &prod, &key)
-			if n != 2 {
-				continue
-			}
-			e.X[prod][key] = v
+	for k, v := range m.M[dent] {
+		a := strings.SplitN(k, "-", 3)
+		if a[0] != "X" {
+			continue
 		}
+		if e.X[a[1]] == nil {
+			e.X[a[1]] = make(map[string]string)
+		}
+		e.X[a[1]][a[2]] = v
 	}
 
 	return e, nil
