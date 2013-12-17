@@ -28,15 +28,6 @@ Name=Create a new Foo!
 Icon=fooview-new
 `
 
-func TestPrintIt(t *testing.T) {
-	d, err := New(strings.NewReader(specExample))
-	if err != nil {
-		t.Error(err)
-	}
-
-	t.Logf("%#v", d)
-}
-
 func TestSpecExample(t *testing.T) {
 	d, err := New(strings.NewReader(specExample))
 	if err != nil {
@@ -86,4 +77,58 @@ func TestActions(t *testing.T) {
 	if a[1].Icon != "fooview-new" {
 		t.Fail()
 	}
+}
+
+const fullExample = `
+# This example will use all the keys.
+[Desktop Entry]
+Type=Application
+Version=1.0
+
+Name=fullExample
+GenericName=Desktop Entry Test
+Comment=This is a test comment.
+Icon=test-icon
+
+NoDisplay=true
+Hidden=true
+OnlyShowIn=Unity;Gnome;
+NotShowIn=KDE;xfce;
+
+DBusActivatable=true
+TryExec=echo
+Exec=echo %F
+Path=/
+Terminal=true
+
+Actions=NewFile;TacoSalad;
+MimeType=text/plain;text/markdown;
+Categories=Tests;Golang;
+Keywords=full;test;golang;xdg;desktop;
+
+StartupNotify=true
+StartupWMClass=test
+
+X-Unity-IconBackgroundColor=#000000
+X-Gnome-Something=foo
+X-KDE-plasma=workspaces
+
+[Desktop Action NewFile]
+Name=New File
+Exec=echo
+Icon=file
+
+[Desktop Action TacoSalad]
+Name=Taco Salad
+Exec=echo Taco Salad
+Icon=taco
+`
+
+func TestPrintIt(t *testing.T) {
+	d, err := New(strings.NewReader(fullExample))
+	if err != nil {
+		t.Error(err)
+	}
+
+	t.Logf("%#v", d)
 }

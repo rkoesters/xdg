@@ -46,7 +46,6 @@ type Entry struct {
 	StartupWMClass string
 
 	// Extended pairs (X-PRODUCT-Key).
-	// TODO: implement X.
 	X map[string]map[string]string
 }
 
