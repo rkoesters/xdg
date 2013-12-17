@@ -1,9 +1,0 @@
-Package xdg provides access to the XDG specs.
-
-TODO
-----
-
-- autostart
-- basedir
-- desktop-entry
-- trash

@@ -1,11 +1,12 @@
 package ini
 
 import (
-	"testing"
+	"reflect"
 	"strings"
+	"testing"
 )
 
-const testFile = `
+const testParser = `
 # This right here is a test file.
 [Header 1]
 key=value
@@ -16,26 +17,25 @@ key=value
 man = bear = pig
 `
 
-func TestNew(t *testing.T) {
-	r := strings.NewReader(testFile)
-	file, err := New(r)
+func TestParser(t *testing.T) {
+	m, err := New(strings.NewReader(testParser))
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(file)
+	t.Log(m)
 
-	if file["Header 1"]["key"] != "value" {
+	if m.Get("Header 1", "key") != "value" {
 		t.Error("basic usage")
 	}
-	if file["Header 1"]["cat"] != "dog" {
+	if m.Get("Header 1", "cat") != "dog" {
 		t.Error("whitespace")
 	}
-	if file["Header 2"]["man"] != "bear = pig" {
+	if m.Get("Header 2", "man") != "bear = pig" {
 		t.Error("equal signs")
 	}
 }
 
-const testFileInvalid = `
+const testInvalid = `
 # This example will have an invalid line.
 [Header 1]
 key=value
@@ -43,9 +43,46 @@ hello world!
 `
 
 func TestInvalid(t *testing.T) {
-	r := strings.NewReader(testFileInvalid)
-	_, err := New(r)
+	_, err := New(strings.NewReader(testInvalid))
 	if err.Error() != "invalid format" {
+		t.Fail()
+	}
+}
+
+const testFormat = `
+# This tests that the formatting functions work.
+[Header 1]
+yes=true
+no=false
+
+list=man;bear;pig;
+`
+
+func TestBool(t *testing.T) {
+	m, err := New(strings.NewReader(testFormat))
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(m)
+
+	if m.Bool("Header 1", "yes") != true {
+		t.Fail()
+	}
+	if m.Bool("Header 1", "no") != false {
+		t.Fail()
+	}
+}
+
+func TestList(t *testing.T) {
+	m, err := New(strings.NewReader(testFormat))
+	if err != nil {
+		t.Error(err)
+	}
+	expect := []string{"man", "bear", "pig"}
+	actual := m.List("Header 1", "list")
+	t.Log(expect)
+	t.Log(actual)
+	if !reflect.DeepEqual(actual, expect) {
 		t.Fail()
 	}
 }
