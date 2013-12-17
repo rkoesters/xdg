@@ -7,9 +7,9 @@ import (
 func TestType(t *testing.T) {
 	m := map[Type]string{
 		Application: "Application",
-		Link: "Link",
-		Directory: "Directory",
-		Unknown: "Unknown",
+		Link:        "Link",
+		Directory:   "Directory",
+		Unknown:     "Unknown",
 	}
 
 	for k, v := range m {

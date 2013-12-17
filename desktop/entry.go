@@ -31,7 +31,7 @@ const (
 	Exec                = "Exec"
 	Path                = "Path"
 	Terminal            = "Terminal"
-	Actions = "Actions"
+	Actions             = "Actions"
 	MimeType            = "MimeType"
 	Categories          = "Categories"
 	Keywords            = "Keywords"
