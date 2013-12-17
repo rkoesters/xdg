@@ -32,7 +32,6 @@ func New(r io.Reader) (*Entry, error) {
 	if !ok {
 		return nil, ErrMissingType
 	}
-	t := e.Type()
 	switch e.Type() {
 	case Link:
 		_, ok = e.m[dent]["URL"]
