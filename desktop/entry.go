@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+// TODO: Add methods to Entry: Launch(uri string...).
+
 var (
 	ErrMissingType = errors.New("missing entry type")
 	ErrMissingName = errors.New("missing entry name")
@@ -87,7 +89,7 @@ type Entry struct {
 
 const dent = "Desktop Entry"
 
-// New reads a INI formated file from r and returns an Entry that
+// New reads an ini.Map formated file from r and returns an Entry that
 // represents the Desktop file that was read.
 func New(r io.Reader) (*Entry, error) {
 	m, err := ini.New(r)
