@@ -28,6 +28,15 @@ Name=Create a new Foo!
 Icon=fooview-new
 `
 
+func TestPrintIt(t *testing.T) {
+	d, err := New(strings.NewReader(specExample))
+	if err != nil {
+		t.Error(err)
+	}
+
+	t.Logf("%#v", d)
+}
+
 func TestSpecExample(t *testing.T) {
 	d, err := New(strings.NewReader(specExample))
 	if err != nil {

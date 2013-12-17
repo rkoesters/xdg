@@ -2,6 +2,7 @@ package desktop
 
 import (
 	"errors"
+	"fmt"
 	"github.com/rkoesters/xdg/ini"
 	"io"
 )
@@ -14,7 +15,7 @@ var (
 
 // Entry represents a desktop entry file.
 //
-// TODO: consider using struct members instead of a map.
+// TODO: extensively comment this struct.
 type Entry struct {
 	Type    Type
 	Version string
@@ -94,6 +95,21 @@ func New(r io.Reader) (*Entry, error) {
 	if e.Type == Link && e.URL == "" {
 		return nil, ErrMissingURL
 	}
+
+	// Search for extended keys.
+	var prod string
+	var key string
+	// TODO: add support for extend groups.
+	for _, gv := range m.M {
+		for k, v := range gv {
+			n, _ := fmt.Sscanf(k, "X-%v-%v", &prod, &key)
+			if n != 2 {
+				continue
+			}
+			e.X[prod][key] = v
+		}
+	}
+
 	return e, nil
 }
 
@@ -104,7 +120,7 @@ type Action struct {
 	Exec string
 }
 
-func getActions(m ini.Map) []*Action {
+func getActions(m *ini.Map) []*Action {
 	var acts []*Action
 
 	for _, a := range m.List(dent, "Actions") {
