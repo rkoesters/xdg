@@ -3,19 +3,20 @@
 package ini
 
 import (
-	"io"
 	"bufio"
-	"strings"
 	"errors"
+	"io"
+	"strconv"
+	"strings"
 )
 
-// File is a map of a map of strings. The first string is the header
+// Map is a map of a map of strings. The first string is the header
 // section and the second is the key.
-type Ini map[string]map[string]string
+type Map map[string]map[string]string
 
-// New creates a new File and returns it.
-func New(r io.Reader) (Ini, error) {
-	m := make(Ini)
+// New creates a new Map and returns it.
+func New(r io.Reader) (Map, error) {
+	m := make(Map)
 	hdr := "default"
 	m[hdr] = make(map[string]string)
 
@@ -29,7 +30,7 @@ func New(r io.Reader) (Ini, error) {
 			// Comment.
 		case line[0:1] == "[" && line[len(line)-1:] == "]":
 			// New section.
-			hdr = line[1:len(line)-1]
+			hdr = line[1 : len(line)-1]
 			m[hdr] = make(map[string]string)
 		case strings.Contains(line, "="):
 			// Key=Value pair.
@@ -42,4 +43,28 @@ func New(r io.Reader) (Ini, error) {
 		}
 	}
 	return m, nil
+}
+
+// Get returns the value with the given group and key. This function is
+// here because underlying data structure of Map may change.
+func (m Map) Get(g, k string) string {
+	return m[g][k]
+}
+
+// Bool returns the value as a bool.
+func (m Map) Bool(g, k string) bool {
+	b, _ := strconv.ParseBool(m.Get(g, k))
+	return b
+}
+
+// List returns the value as a slice of strings.
+func (m Map) List(g, k string) []string {
+	l := strings.Split(m.Get(g, k), ";")
+	for i := 0; i < len(l); i++ {
+		if l[i] == "" {
+			l = append(l[:i], l[i+1:]...)
+			i--
+		}
+	}
+	return l
 }

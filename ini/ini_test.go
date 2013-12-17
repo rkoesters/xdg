@@ -1,8 +1,8 @@
 package ini
 
 import (
-	"testing"
 	"strings"
+	"testing"
 )
 
 const testFile = `
@@ -18,19 +18,19 @@ man = bear = pig
 
 func TestNew(t *testing.T) {
 	r := strings.NewReader(testFile)
-	file, err := New(r)
+	m, err := New(r)
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(file)
+	t.Log(m)
 
-	if file["Header 1"]["key"] != "value" {
+	if m.Get("Header 1", "key") != "value" {
 		t.Error("basic usage")
 	}
-	if file["Header 1"]["cat"] != "dog" {
+	if m.Get("Header 1", "cat") != "dog" {
 		t.Error("whitespace")
 	}
-	if file["Header 2"]["man"] != "bear = pig" {
+	if m.Get("Header 2", "man") != "bear = pig" {
 		t.Error("equal signs")
 	}
 }
