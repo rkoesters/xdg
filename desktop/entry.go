@@ -14,35 +14,66 @@ var (
 )
 
 // Entry represents a desktop entry file.
-//
-// TODO: extensively comment this struct.
 type Entry struct {
-	Type    Type
+	// The type of desktop entry. It can be: Application, Link, or
+	// Directory.
+	Type Type
+	// The version of spec that the file conforms to.
 	Version string
 
-	Name        string
+	// The real name of the desktop entry.
+	Name string
+	// A generic name, for example: Text Editor or Web Browser.
 	GenericName string
-	Comment     string
-	Icon        string
-	URL         string
+	// A short comment that describes the desktop entry.
+	Comment string
+	// The name of an icon that should be used for this desktop
+	// entry.  If it is not an absolute path, it should be searched
+	// for using the Icon Theme Specification.
+	Icon string
+	// The URL for a Link type entry.
+	URL string
 
-	NoDisplay  bool
-	Hidden     bool
+	// Whether or not to display the file in menus.
+	NoDisplay bool
+	// Whether the use has deleted the desktop entry.
+	Hidden bool
+	// A list of desktop environments that the desktop entry should
+	// only be shown in.
 	OnlyShowIn []string
-	NotShowIn  []string
+	// A list of desktop environments that the desktop entry should
+	// not be shown in.
+	NotShowIn []string
 
+	// Whether DBus Activation is supported by this application.
 	DBusActivatable bool
-	TryExec         string
-	Exec            string
-	Path            string
-	Terminal        bool
+	// The path to an executable to test if the program is
+	// installed.
+	TryExec string
+	// Program to execute. TODO: talk about arguments.
+	Exec string
+	// The path that should be the programs working directory.
+	Path string
+	// Whether the program should be run in a terminal window.
+	Terminal bool
 
-	Actions    []*Action
-	MimeType   []string
+	// A slice of actions.
+	Actions []*Action
+	// A slice of mimetypes supported by this program.
+	MimeType []string
+	// A slice of categories that the desktop entry should be shown
+	// in in a menu.
 	Categories []string
-	Keywords   []string
+	// A slice of keywords.
+	Keywords []string
 
-	StartupNotify  bool
+	// Whether the program will send a "remove" message when started
+	// with the DESKTOP_STARTUP_ID env variable is set.
+	// TODO: needs be explaination, I don't really know what it
+	// means.
+	StartupNotify bool
+	// The string that the program will set as WM Class or WM name
+	// hint.
 	StartupWMClass string
 
 	// Extended pairs. These are all of the key=value pairs in which
@@ -56,6 +87,8 @@ type Entry struct {
 
 const dent = "Desktop Entry"
 
+// New reads a INI formated file from r and returns an Entry that
+// represents the Desktop file that was read.
 func New(r io.Reader) (*Entry, error) {
 	m, err := ini.New(r)
 	if err != nil {
