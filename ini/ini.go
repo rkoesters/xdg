@@ -11,13 +11,13 @@ import (
 
 // File is a map of a map of strings. The first string is the header
 // section and the second is the key.
-type File map[string]map[string]string
+type Ini map[string]map[string]string
 
 // New creates a new File and returns it.
-func New(r io.Reader) (File, error) {
-	file := make(File)
+func New(r io.Reader) (Ini, error) {
+	m := make(Ini)
 	hdr := "default"
-	file[hdr] = make(map[string]string)
+	m[hdr] = make(map[string]string)
 
 	sc := bufio.NewScanner(r)
 	for sc.Scan() {
@@ -30,16 +30,16 @@ func New(r io.Reader) (File, error) {
 		case line[0:1] == "[" && line[len(line)-1:] == "]":
 			// New section.
 			hdr = line[1:len(line)-1]
-			file[hdr] = make(map[string]string)
+			m[hdr] = make(map[string]string)
 		case strings.Contains(line, "="):
 			// Key=Value pair.
 			p := strings.SplitN(line, "=", 2)
 			p[0] = strings.TrimSpace(p[0])
 			p[1] = strings.TrimSpace(p[1])
-			file[hdr][p[0]] = p[1]
+			m[hdr][p[0]] = p[1]
 		default:
 			return nil, errors.New("invalid format")
 		}
 	}
-	return file, nil
+	return m, nil
 }
