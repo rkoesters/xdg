@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-const testFile = `
+const testParser = `
 # This right here is a test file.
 [Header 1]
 key=value
@@ -16,7 +16,7 @@ key=value
 man = bear = pig
 `
 
-func TestNew(t *testing.T) {
+func TestParser(t *testing.T) {
 	r := strings.NewReader(testFile)
 	m, err := New(r)
 	if err != nil {
@@ -35,7 +35,7 @@ func TestNew(t *testing.T) {
 	}
 }
 
-const testFileInvalid = `
+const testInvalid = `
 # This example will have an invalid line.
 [Header 1]
 key=value
@@ -43,7 +43,7 @@ hello world!
 `
 
 func TestInvalid(t *testing.T) {
-	r := strings.NewReader(testFileInvalid)
+	r := strings.NewReader(testInvalid)
 	_, err := New(r)
 	if err.Error() != "invalid format" {
 		t.Fail()
