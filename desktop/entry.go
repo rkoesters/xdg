@@ -14,6 +14,31 @@ var (
 
 const dent = "Desktop Entry"
 
+type Key string
+
+const (
+	Version         Key = "Version"
+	Name                = "Name"
+	GenericName         = "GenericName"
+	NoDisplay           = "NoDisplay"
+	Comment             = "Comment"
+	Icon                = "Icon"
+	Hidden              = "Hidden"
+	OnlyShowin          = "OnlyShowIn"
+	NotShowIn           = "NotShowIn"
+	DBusActivatable     = "DBusActivatable"
+	TryExec             = "TryExec"
+	Exec                = "Exec"
+	Path                = "Path"
+	Terminal            = "Terminal"
+	MimeType            = "MimeType"
+	Categories          = "Categories"
+	Keywords            = "Keywords"
+	StartupNotify       = "StartupNotify"
+	StartupWMClass      = "StartupWMClass"
+	URL                 = "URL"
+)
+
 // Entry represents a desktop entry file.
 type Entry struct {
 	m ini.Map
@@ -48,44 +73,18 @@ func New(r io.Reader) (*Entry, error) {
 	return e, nil
 }
 
-func (e *Entry) Type() Type { return ParseType(e.m.Get(dent, "Type")) }
+func (e *Entry) Type() Type {
+	return ParseType(e.m.Get(dent, "Type"))
+}
 
-func (e *Entry) Version() string { return e.m.Get(dent, "Version") }
+func (e *Entry) String(k Key) string {
+	return e.m.Get(dent, string(k))
+}
 
-func (e *Entry) Name() string { return e.m.Get(dent, "Name") }
+func (e *Entry) Bool(k Key) bool {
+	return e.m.Bool(dent, string(k))
+}
 
-func (e *Entry) GenericName() string { return e.m.Get(dent, "GenericName") }
-
-func (e *Entry) NoDisplay() bool { return e.m.Bool(dent, "NoDisplay") }
-
-func (e *Entry) Comment() string { return e.m.Get(dent, "Comment") }
-
-func (e *Entry) Icon() string { return e.m.Get(dent, "Icon") }
-
-func (e *Entry) Hidden() bool { return e.m.Bool(dent, "Hidden") }
-
-func (e *Entry) OnlyShowIn() []string { return e.m.List(dent, "OnlyShowIn") }
-
-func (e *Entry) NotShowIn() []string { return e.m.List(dent, "NotShowIn") }
-
-func (e *Entry) DBusActivatable() bool { return e.m.Bool(dent, "DBusActivatable") }
-
-func (e *Entry) TryExec() string { return e.m.Get(dent, "TryExec") }
-
-func (e *Entry) Exec() string { return e.m.Get(dent, "Exec") }
-
-func (e *Entry) Path() string { return e.m.Get(dent, "Path") }
-
-func (e *Entry) Terminal() bool { return e.m.Bool(dent, "Terminal") }
-
-func (e *Entry) MimeType() []string { return e.m.List(dent, "MimeType") }
-
-func (e *Entry) Categories() []string { return e.m.List(dent, "Categories") }
-
-func (e *Entry) Keywords() []string { return e.m.List(dent, "Keywords") }
-
-func (e *Entry) StartupNotify() bool { return e.m.Bool(dent, "StartupNotify") }
-
-func (e *Entry) StartupWMClass() string { return e.m.Get(dent, "StartupWMClass") }
-
-func (e *Entry) URL() string { return e.m.Get(dent, "URL") }
+func (e *Entry) List(k Key) []string {
+	return e.m.List(dent, string(k))
+}

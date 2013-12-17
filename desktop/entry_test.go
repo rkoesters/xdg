@@ -38,18 +38,18 @@ func TestSpecExample(t *testing.T) {
 		t.Error("Type")
 	}
 
-	arr := map[string]string{
-		d.Version(): "1.0",
-		d.Name():    "Foo Viewer",
-		d.Comment(): "The best viewer for Foo objects available!",
-		d.TryExec(): "fooview",
-		d.Exec():    "fooview %F",
-		d.Icon():    "fooview",
+	arr := map[Key]string{
+		Version: "1.0",
+		Name:    "Foo Viewer",
+		Comment: "The best viewer for Foo objects available!",
+		TryExec: "fooview",
+		Exec:    "fooview %F",
+		Icon:    "fooview",
 	}
-	for act, exp := range arr {
-		if act != exp {
+	for k, exp := range arr {
+		if d.String(k) != exp {
 			t.Log("expected: " + exp)
-			t.Log("actual:   " + act)
+			t.Log("actual:   " + d.String(k))
 			t.Fail()
 		}
 	}
