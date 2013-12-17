@@ -41,6 +41,8 @@ const (
 )
 
 // Entry represents a desktop entry file.
+//
+// TODO: consider using struct members instead of a map.
 type Entry struct {
 	m ini.Map
 }
