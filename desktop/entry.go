@@ -78,6 +78,11 @@ func (e *Entry) Type() Type {
 	return ParseType(e.m.Get(dent, "Type"))
 }
 
+func (e *Entry) HasKey(k Key) bool {
+	_, b := e.m[dent][string(k)]
+	return b
+}
+
 func (e *Entry) String(k Key) string {
 	return e.m.Get(dent, string(k))
 }
