@@ -10,8 +10,17 @@ import (
 // TODO: Add methods to Entry: Launch(uri string...).
 
 var (
+	// ErrMissingType means that the desktop entry is missing the
+	// Type key, which is always required.
 	ErrMissingType = errors.New("missing entry type")
+
+	// ErrMissingName means that the desktop entry is missing the
+	// Name key, which is required by the types Application, Link,
+	// and Directory.
 	ErrMissingName = errors.New("missing entry name")
+
+	// ErrMissingURL means that the desktop entry is missing the URL
+	// key, which is required by the type Link.
 	ErrMissingURL  = errors.New("missing entry url")
 )
 
