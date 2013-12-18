@@ -22,7 +22,7 @@ type Map struct {
 func New(r io.Reader) (*Map, error) {
 	m := new(Map)
 	m.M = make(map[string]map[string]string)
-	hdr := "default"
+	hdr := ""
 	m.M[hdr] = make(map[string]string)
 
 	sc := bufio.NewScanner(r)
