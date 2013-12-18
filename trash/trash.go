@@ -87,3 +87,9 @@ func (d *Dir) Empty() error {
 	}
 	return nil
 }
+
+// IsEmpty returns whether or not the trash is empty.
+func (d *Dir) IsEmpty() bool {
+	files, _ := d.Files()
+	return len(files) == 0
+}

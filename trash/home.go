@@ -30,3 +30,6 @@ func EraseAll(s string) error { return hometrash.EraseAll(s) }
 
 // Empty erases all files in the trash.
 func Empty() error { return hometrash.Empty() }
+
+// IsEmpty returns whether or not the trash is empty.
+func IsEmpty() bool { return hometrash.IsEmpty() }
