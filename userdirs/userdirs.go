@@ -82,7 +82,10 @@ func New(r io.Reader) (*UserDirs, error) {
 func parse(s string) string {
 	s = strings.Trim(s, "\"")
 	if strings.HasPrefix(s, "$HOME") {
-		return filepath.Join(basedir.Home, strings.TrimPrefix(s, "$HOME"))
+		s = filepath.Join(basedir.Home, strings.TrimPrefix(s, "$HOME"))
+	}
+	if s == "" {
+		s = basedir.Home
 	}
 	return s
 }
