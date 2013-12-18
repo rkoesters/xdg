@@ -15,11 +15,10 @@ type Dir struct {
 
 // New creates a new Trash directory.
 func New(root string) (*Dir, error) {
-	dir := &Dir{root}
 	// TODO: We need to check permissions and stuff on creation of a new
 	// trash. This means we need to check for a sticky bit and a bunch of
 	// other stuff.
-	return dir, nil
+	panic("TODO")
 }
 
 func (d *Dir) file2path(s string) string {

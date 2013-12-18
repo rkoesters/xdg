@@ -8,12 +8,7 @@ import (
 var hometrash *Dir
 
 func init() {
-	var err error
-	hometrash, err = New(filepath.Join(basedir.DataHome, "Trash"))
-	if err != nil {
-		// TODO: remove this
-		panic(err)
-	}
+	hometrash = &Dir{filepath.Join(basedir.DataHome, "Trash")}
 }
 
 // Files returns a slice of the files in the default trash.
