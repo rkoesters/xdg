@@ -51,9 +51,15 @@ func (i *Info) String() string {
 // queryEscape is a wrapper function around url.QueryEscape that doesn't
 // escape '/'.
 func queryEscape(s string) string {
+	// The first for loop is the workaround for "/".
 	a := strings.Split(s, "/")
 	for i := 0; i < len(a); i++ {
-		a[i] = url.QueryEscape(a[i])
+		// The second for loop is the workaround for " ".
+		b := strings.Split(a[i], " ")
+		for j := 0; j < len(b); j++ {
+			b[j] = url.QueryEscape(b[j])
+		}
+		a[i] = strings.Join(b, "%20")
 	}
 	return strings.Join(a, "/")
 }
