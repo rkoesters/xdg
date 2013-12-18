@@ -3,6 +3,7 @@ package trash
 import (
 	"fmt"
 	"github.com/rkoesters/xdg/ini"
+	"time"
 	"io"
 	"net/url"
 )
