@@ -1,5 +1,7 @@
 // Package ini implements the ini file format that is used in many of
 // the xdg specs.
+//
+// WARNING: This package's API is not yet stable.
 package ini
 
 import (
