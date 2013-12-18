@@ -7,7 +7,7 @@ import (
 
 const trashinfo = `[Trash Info]
 Path=/home/user/file.txt
-DeletionDate=2006-01-02T15:04:05-07:00
+DeletionDate=2006-01-02T15:04:05
 `
 
 func TestInfo(t *testing.T) {
