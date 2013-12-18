@@ -1,5 +1,7 @@
 // Package ini implements the ini file format that is used in many of
 // the xdg specs.
+//
+// WARNING: This package's API is not yet stable.
 package ini
 
 import (
@@ -20,7 +22,7 @@ type Map struct {
 func New(r io.Reader) (*Map, error) {
 	m := new(Map)
 	m.M = make(map[string]map[string]string)
-	hdr := "default"
+	hdr := ""
 	m.M[hdr] = make(map[string]string)
 
 	sc := bufio.NewScanner(r)
@@ -48,21 +50,21 @@ func New(r io.Reader) (*Map, error) {
 	return m, nil
 }
 
-// Get returns the value with the given group and key. This function is
-// here because underlying data structure of Map may change.
-func (m *Map) Get(g, k string) string {
+// String returns the value with the given group and key. This function
+// is here because underlying data structure of Map may change.
+func (m *Map) String(g, k string) string {
 	return m.M[g][k]
 }
 
 // Bool returns the value as a bool.
 func (m *Map) Bool(g, k string) bool {
-	b, _ := strconv.ParseBool(m.Get(g, k))
+	b, _ := strconv.ParseBool(m.String(g, k))
 	return b
 }
 
 // List returns the value as a slice of strings.
 func (m *Map) List(g, k string) []string {
-	l := strings.Split(m.Get(g, k), ";")
+	l := strings.Split(m.String(g, k), ";")
 	for i := 0; i < len(l); i++ {
 		if l[i] == "" {
 			l = append(l[:i], l[i+1:]...)

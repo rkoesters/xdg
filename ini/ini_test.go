@@ -24,13 +24,13 @@ func TestParser(t *testing.T) {
 	}
 	t.Log(m)
 
-	if m.Get("Header 1", "key") != "value" {
+	if m.String("Header 1", "key") != "value" {
 		t.Error("basic usage")
 	}
-	if m.Get("Header 1", "cat") != "dog" {
+	if m.String("Header 1", "cat") != "dog" {
 		t.Error("whitespace")
 	}
-	if m.Get("Header 2", "man") != "bear = pig" {
+	if m.String("Header 2", "man") != "bear = pig" {
 		t.Error("equal signs")
 	}
 }

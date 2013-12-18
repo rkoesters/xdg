@@ -99,28 +99,28 @@ func New(r io.Reader) (*Entry, error) {
 
 	// Create the entry.
 	e := &Entry{
-		Type:            ParseType(m.Get(dent, "Type")),
-		Version:         m.Get(dent, "Version"),
-		Name:            m.Get(dent, "Name"),
-		GenericName:     m.Get(dent, "GenericName"),
-		Comment:         m.Get(dent, "Comment"),
-		Icon:            m.Get(dent, "Icon"),
-		URL:             m.Get(dent, "URL"),
+		Type:            ParseType(m.String(dent, "Type")),
+		Version:         m.String(dent, "Version"),
+		Name:            m.String(dent, "Name"),
+		GenericName:     m.String(dent, "GenericName"),
+		Comment:         m.String(dent, "Comment"),
+		Icon:            m.String(dent, "Icon"),
+		URL:             m.String(dent, "URL"),
 		NoDisplay:       m.Bool(dent, "NoDisplay"),
 		Hidden:          m.Bool(dent, "Hidden"),
 		OnlyShowIn:      m.List(dent, "OnlyShowIn"),
 		NotShowIn:       m.List(dent, "NotShowIn"),
 		DBusActivatable: m.Bool(dent, "DBusActivatable"),
-		TryExec:         m.Get(dent, "TryExec"),
-		Exec:            m.Get(dent, "Exec"),
-		Path:            m.Get(dent, "Path"),
+		TryExec:         m.String(dent, "TryExec"),
+		Exec:            m.String(dent, "Exec"),
+		Path:            m.String(dent, "Path"),
 		Terminal:        m.Bool(dent, "Terminal"),
 		Actions:         getActions(m),
 		MimeType:        m.List(dent, "MimeType"),
 		Categories:      m.List(dent, "Categories"),
 		Keywords:        m.List(dent, "Keywords"),
 		StartupNotify:   m.Bool(dent, "StartupNotify"),
-		StartupWMClass:  m.Get(dent, "StartupWMClass"),
+		StartupWMClass:  m.String(dent, "StartupWMClass"),
 		X:               make(map[string]map[string]string),
 	}
 
@@ -163,9 +163,9 @@ func getActions(m *ini.Map) []*Action {
 	for _, a := range m.List(dent, "Actions") {
 		g := "Desktop Action " + a
 		acts = append(acts, &Action{
-			Name: m.Get(g, "Name"),
-			Icon: m.Get(g, "Icon"),
-			Exec: m.Get(g, "Exec"),
+			Name: m.String(g, "Name"),
+			Icon: m.String(g, "Icon"),
+			Exec: m.String(g, "Exec"),
 		})
 	}
 	return acts
