@@ -22,6 +22,9 @@ func Files() ([]string, error) { return hometrash.Files() }
 // Stat returns the Info for the given file in the trash.
 func Stat(s string) (*Info, error) { return hometrash.Stat(s) }
 
+// Trash moves the given file to the trash.
+func Trash(p string) error { return hometrash.Trash(p) }
+
 // Erase removes the given file from the trash.
 func Erase(s string) error { return hometrash.Erase(s) }
 

@@ -1,8 +1,11 @@
 package trash
 
 import (
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
+	"time"
 )
 
 // Dir represents a trash directory.
@@ -45,6 +48,37 @@ func (d *Dir) Stat(s string) (*Info, error) {
 	}
 	defer f.Close()
 	return NewInfo(f)
+}
+
+// Trash moves the file at the given path to the trash.
+func (d *Dir) Trash(p string) error {
+	// Find an open file name.
+	tname := filepath.Base(p)
+	for i := 2; d.exists(tname); i++ {
+		tname = filepath.Base(p) + "." + strconv.Itoa(i)
+	}
+
+	// First, write the trashinfo file.
+	abs, err := filepath.Abs(p)
+	if err != nil {
+		return err
+	}
+	info := &Info{abs, time.Now()}
+	err = ioutil.WriteFile(d.info2path(tname), []byte(info.String()), os.ModePerm)
+	if err != nil {
+		return err
+	}
+
+	// Next, move the file to the trash.
+	return os.Rename(p, d.file2path(tname))
+}
+
+func (d *Dir) exists(s string) bool {
+	_, err := os.Stat(d.file2path(s))
+	if os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
 
 // Erase removes the given file from the trash.
