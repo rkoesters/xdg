@@ -1,8 +1,9 @@
 package desktop
 
-// Type is the type of desktop file.
+// Type is the type of desktop entry.
 type Type uint8
 
+// These are the possible desktop entry types.
 const (
 	None Type = iota // No type. This is bad.
 	Application
