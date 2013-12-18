@@ -1,6 +1,7 @@
 package trash
 
 import (
+	"fmt"
 	"github.com/rkoesters/xdg/ini"
 	"io"
 	"net/url"
@@ -10,7 +11,7 @@ const tinfo = "Trash Info"
 
 // Info represents a .trashinfo file.
 type Info struct {
-	Path string
+	Path         string
 	DeletionDate time.Time
 }
 
@@ -28,4 +29,13 @@ func NewInfo(r io.Reader) (*Info, error) {
 		return nil, err
 	}
 	return info, nil
+}
+
+// String returns Info as a string in the INI format.
+func (i *Info) String() string {
+	return fmt.Sprintf(
+		"[Trash Info]\nPath=%v\nDeletionDate=%v\n",
+		url.QueryEscape(i.Path()),
+		i.DeletionDate.Format(time.RFC3339),
+	)
 }
