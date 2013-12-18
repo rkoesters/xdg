@@ -8,30 +8,31 @@ import (
 )
 
 var (
-	// The home directory.
+	// Home is the user's home directory.
 	Home string
 
-	// The path to the directory where user data files should be
-	// written.
+	// DataHome is the path to the directory where user data files
+	// should be written.
 	DataHome string
 
-	// The path to the directory where user configuration files
-	// should be written.
+	// ConfigHome is the path to the directory where user
+	// configuration files should be written.
 	ConfigHome string
 
-	// The path to the directory where non-essential (cached) data
-	// should be written.
+	// CacheHome is the path to the directory where non-essential
+	// (cached) data should be written.
 	CacheHome string
 
-	// The path to the directory where runtime files should be
-	// placed.
+	// RuntimeDir is the path to the directory where runtime files
+	// should be placed.
 	RuntimeDir string
 
-	// A slice of paths that should be searched for data files.
+	// DataDirs is a slice of paths that should be searched for data
+	// files.
 	DataDirs []string
 
-	// A slice of paths that should be searched for configuration
-	// files.
+	// ConfigDirs is a slice of paths that should be searched for
+	// configuration files.
 	ConfigDirs []string
 )
 
