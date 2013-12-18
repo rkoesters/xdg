@@ -3,9 +3,9 @@ package trash
 import (
 	"fmt"
 	"github.com/rkoesters/xdg/ini"
-	"time"
 	"io"
 	"net/url"
+	"time"
 )
 
 const tinfo = "Trash Info"
@@ -24,7 +24,10 @@ func NewInfo(r io.Reader) (*Info, error) {
 	}
 
 	info := new(Info)
-	info.Path = url.QueryUnescape(m.String(tinfo, "Path"))
+	info.Path, err = url.QueryUnescape(m.String(tinfo, "Path"))
+	if err != nil {
+		return nil, err
+	}
 	info.DeletionDate, err = time.Parse(time.RFC3339, m.String(tinfo, "DeletionDate"))
 	if err != nil {
 		return nil, err
@@ -36,7 +39,7 @@ func NewInfo(r io.Reader) (*Info, error) {
 func (i *Info) String() string {
 	return fmt.Sprintf(
 		"[Trash Info]\nPath=%v\nDeletionDate=%v\n",
-		url.QueryEscape(i.Path()),
+		url.QueryEscape(i.Path),
 		i.DeletionDate.Format(time.RFC3339),
 	)
 }
