@@ -10,6 +10,7 @@ Documentation
 * [desktop](https://godoc.org/github.com/rkoesters/xdg/desktop)
 * [ini](https://godoc.org/github.com/rkoesters/xdg/ini)
 * [userdirs](https://godoc.org/github.com/rkoesters/xdg/userdirs)
+* [xdg](https://godoc.org/github.com/rkoesters/xdg)
 
 TODO
 ----
