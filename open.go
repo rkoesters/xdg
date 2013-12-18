@@ -9,10 +9,10 @@ import (
 
 // These errors can be returned by Open.
 var (
-	ErrSyntax       = errors.New("Error in command line syntax")
-	ErrFileNotFound = errors.New("One of the files passed on the command line did not exist")
-	ErrToolNotFound = errors.New("A required tool could not be found")
-	ErrFailed       = errors.New("The action failed")
+	ErrSyntax       = errors.New("error in command line syntax")
+	ErrFileNotFound = errors.New("one of the files passed on the command line did not exist")
+	ErrToolNotFound = errors.New("a required tool could not be found")
+	ErrFailed       = errors.New("the action failed")
 )
 
 // Open runs the command xdg-open with the given uri as an argument.
