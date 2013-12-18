@@ -9,6 +9,7 @@ Documentation
 * [basedir](https://godoc.org/github.com/rkoesters/xdg/basedir)
 * [desktop](https://godoc.org/github.com/rkoesters/xdg/desktop)
 * [ini](https://godoc.org/github.com/rkoesters/xdg/ini)
+* [userdirs](https://godoc.org/github.com/rkoesters/xdg/userdirs)
 
 TODO
 ----
