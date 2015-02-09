@@ -147,7 +147,7 @@ func New(r io.Reader) (*Entry, error) {
 	// Search for extended keys.
 	for k, v := range m.M[dent] {
 		a := strings.SplitN(k, "-", 3)
-		if a[0] != "X" {
+		if a[0] != "X" || len(a) < 3 {
 			continue
 		}
 		if e.X[a[1]] == nil {
