@@ -1,14 +1,60 @@
 package basedir
 
 import (
+	"os"
 	"testing"
 )
 
-func TestGetenv(t *testing.T) {
-	if getenv("PATH", "not set") == "not set" {
+func TestBaseDir(t *testing.T) {
+	if Home == "" {
+		t.Error("Home not set")
+	}
+	if DataHome == "" {
+		t.Error("DataHome not set")
+	}
+	if ConfigHome == "" {
+		t.Error("ConfigHome not set")
+	}
+	if CacheHome == "" {
+		t.Error("CacheHome not set")
+	}
+	if RuntimeDir == "" {
+		t.Error("RuntimeDir not set")
+	}
+	if len(DataDirs) == 0 {
+		t.Error("DataDirs not set")
+	}
+	if len(ConfigDirs) == 0 {
+		t.Error("ConfigDirs not set")
+	}
+}
+
+func TestGetpath(t *testing.T) {
+	const notSet = "not set"
+	if getpath("HOME", notSet) == notSet {
+		t.Error("Couldn't get HOME")
+	}
+	if getpath("does_not_exist", notSet) != notSet {
+		t.Error("does_not_exist exists")
+	}
+	if getpath("USER", notSet) != notSet {
+		t.Error("USER appears to be an absolute path")
+	}
+}
+
+func TestGetpathlist(t *testing.T) {
+	if getpathlist("PATH", nil) == nil {
 		t.Error("Couldn't get PATH")
 	}
-	if getenv("does_not_exist", "not set") != "not set" {
+	if getpathlist("does_not_exist", nil) != nil {
 		t.Error("does_not_exist exists")
+	}
+	err := os.Setenv("xdg_test_var", "/a:/a/b:c:d/f")
+	if err != nil {
+		t.Error(err)
+	}
+	test_var := getpathlist("xdg_test_var", nil)
+	if test_var[0] != "/a" || test_var[1] != "/a/b" {
+		t.Error("getpathlist returned relative paths")
 	}
 }

@@ -47,26 +47,32 @@ func init() {
 		}
 	}
 
-	DataHome = getenv("XDG_DATA_HOME", filepath.Join(Home, ".local/share"))
-	ConfigHome = getenv("XDG_CONFIG_HOME", filepath.Join(Home, ".config"))
-	CacheHome = getenv("XDG_CACHE_HOME", filepath.Join(Home, ".cache"))
-	RuntimeDir = getenv("XDG_RUNTIME_DIR", CacheHome)
-
-	DataDirs = filepath.SplitList(os.Getenv("XDG_DATA_DIRS"))
-	if len(DataDirs) == 0 {
-		DataDirs = []string{"/usr/local/share", "/usr/share"}
-	}
-
-	ConfigDirs = filepath.SplitList(os.Getenv("XDG_CONFIG_DIRS"))
-	if len(ConfigDirs) == 0 {
-		ConfigDirs = []string{"/etc/xdg"}
-	}
+	DataHome = getpath("XDG_DATA_HOME", filepath.Join(Home, ".local/share"))
+	ConfigHome = getpath("XDG_CONFIG_HOME", filepath.Join(Home, ".config"))
+	CacheHome = getpath("XDG_CACHE_HOME", filepath.Join(Home, ".cache"))
+	RuntimeDir = getpath("XDG_RUNTIME_DIR", CacheHome)
+	DataDirs = getpathlist("XDG_DATA_DIRS", []string{"/usr/local/share", "/usr/share"})
+	ConfigDirs = getpathlist("XDG_CONFIG_DIRS", []string{"/etc/xdg"})
 }
 
-func getenv(env, def string) string {
-	x := os.Getenv(env)
-	if x == "" {
+func getpath(env, def string) string {
+	path := os.Getenv(env)
+	if path == "" || !filepath.IsAbs(path) {
 		return def
 	}
-	return x
+	return path
+}
+
+func getpathlist(env string, def []string) []string {
+	paths := filepath.SplitList(os.Getenv(env))
+	for i := 0; i < len(paths); i++ {
+		// If the path isn't absolute, we need to ignore it.
+		if !filepath.IsAbs(paths[i]) {
+			paths = append(paths[:i], paths[i+1:]...)
+		}
+	}
+	if len(paths) == 0 {
+		return def
+	}
+	return paths
 }
