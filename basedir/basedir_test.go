@@ -53,8 +53,8 @@ func TestGetpathlist(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	test_var := getpathlist("xdg_test_var", nil)
-	if test_var[0] != "/a" || test_var[1] != "/a/b" {
+	testVar := getpathlist("xdg_test_var", nil)
+	if testVar[0] != "/a" || testVar[1] != "/a/b" {
 		t.Error("getpathlist returned relative paths")
 	}
 }
