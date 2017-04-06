@@ -49,7 +49,7 @@ func TestGetpathlist(t *testing.T) {
 	if getpathlist("does_not_exist", nil) != nil {
 		t.Error("does_not_exist exists")
 	}
-	err := os.Setenv("xdg_test_var", "/a:/a/b:c:d/f")
+	err := os.Setenv("xdg_test_var", "/a:c:/a/b:d/f")
 	if err != nil {
 		t.Error(err)
 	}
