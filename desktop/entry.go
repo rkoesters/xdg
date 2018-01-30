@@ -24,6 +24,35 @@ var (
 	ErrMissingURL = errors.New("missing entry url")
 )
 
+const (
+	groupDesktopEntry        = "Desktop Entry"
+	groupDesktopActionPrefix = "Desktop Action "
+
+	keyType            = "Type"
+	keyVersion         = "Version"
+	keyName            = "Name"
+	keyGenericName     = "GenericName"
+	keyNoDisplay       = "NoDisplay"
+	keyComment         = "Comment"
+	keyIcon            = "Icon"
+	keyHidden          = "Hidden"
+	keyOnlyShowIn      = "OnlyShowIn"
+	keyNotShowIn       = "NotShowIn"
+	keyDBusActivatable = "DBusActivatable"
+	keyTryExec         = "TryExec"
+	keyExec            = "Exec"
+	keyPath            = "Path"
+	keyTerminal        = "Terminal"
+	keyActions         = "Actions"
+	keyMimeType        = "MimeType"
+	keyCategories      = "Categories"
+	keyImplements      = "Implements"
+	keyKeywords        = "Keywords"
+	keyStartupNotify   = "StartupNotify"
+	keyStartupWMClass  = "StartupWMClass"
+	keyURL             = "URL"
+)
+
 // Entry represents a desktop entry file.
 type Entry struct {
 	// The type of desktop entry. It can be: Application, Link, or
@@ -96,8 +125,6 @@ type Entry struct {
 	X map[string]map[string]string
 }
 
-const dent = "Desktop Entry"
-
 // New reads an keyfile.Map formated file from r and returns an Entry that
 // represents the Desktop file that was read.
 func New(r io.Reader) (*Entry, error) {
@@ -109,90 +136,130 @@ func New(r io.Reader) (*Entry, error) {
 	// Create the entry.
 	e := new(Entry)
 
-	e.Type = ParseType(kf.Value(dent, "Type"))
-	e.Version, err = kf.String(dent, "Version")
+	e.Type = ParseType(kf.Value(groupDesktopEntry, keyType))
+	if kf.ValueExists(groupDesktopEntry, keyVersion) {
+		e.Version, err = kf.String(groupDesktopEntry, keyVersion)
+		if err != nil {
+			return nil, err
+		}
+	}
+	e.Name, err = kf.String(groupDesktopEntry, keyName)
 	if err != nil {
 		return nil, err
 	}
-	e.Name, err = kf.String(dent, "Name")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyGenericName) {
+		e.GenericName, err = kf.String(groupDesktopEntry, keyGenericName)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.GenericName, err = kf.String(dent, "GenericName")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyNoDisplay) {
+		e.NoDisplay, err = kf.Bool(groupDesktopEntry, keyNoDisplay)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Comment, err = kf.String(dent, "Comment")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyComment) {
+		e.Comment, err = kf.String(groupDesktopEntry, keyComment)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Icon, err = kf.String(dent, "Icon")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyIcon) {
+		e.Icon, err = kf.String(groupDesktopEntry, keyIcon)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.URL, err = kf.String(dent, "URL")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyHidden) {
+		e.Hidden, err = kf.Bool(groupDesktopEntry, keyHidden)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.NoDisplay, err = kf.Bool(dent, "NoDisplay")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyOnlyShowIn) {
+		e.OnlyShowIn, err = kf.StringList(groupDesktopEntry, keyOnlyShowIn)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Hidden, err = kf.Bool(dent, "Hidden")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyNotShowIn) {
+		e.NotShowIn, err = kf.StringList(groupDesktopEntry, keyNotShowIn)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.OnlyShowIn, err = kf.StringList(dent, "OnlyShowIn")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyDBusActivatable) {
+		e.DBusActivatable, err = kf.Bool(groupDesktopEntry, keyDBusActivatable)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.NotShowIn, err = kf.StringList(dent, "NotShowIn")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyTryExec) {
+		e.TryExec, err = kf.String(groupDesktopEntry, keyTryExec)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.DBusActivatable, err = kf.Bool(dent, "DBusActivatable")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyExec) {
+		e.Exec, err = kf.String(groupDesktopEntry, keyExec)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.TryExec, err = kf.String(dent, "TryExec")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyPath) {
+		e.Path, err = kf.String(groupDesktopEntry, keyPath)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Exec, err = kf.String(dent, "Exec")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyTerminal) {
+		e.Terminal, err = kf.Bool(groupDesktopEntry, keyTerminal)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Path, err = kf.String(dent, "Path")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyActions) {
+		e.Actions, err = getActions(kf)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Terminal, err = kf.Bool(dent, "Terminal")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyMimeType) {
+		e.MimeType, err = kf.StringList(groupDesktopEntry, keyMimeType)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Actions, err = getActions(kf)
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyCategories) {
+		e.Categories, err = kf.StringList(groupDesktopEntry, keyCategories)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.MimeType, err = kf.StringList(dent, "MimeType")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyKeywords) {
+		e.Keywords, err = kf.StringList(groupDesktopEntry, keyKeywords)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Categories, err = kf.StringList(dent, "Categories")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyStartupNotify) {
+		e.StartupNotify, err = kf.Bool(groupDesktopEntry, keyStartupNotify)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.Keywords, err = kf.StringList(dent, "Keywords")
-	if err != nil {
-		return nil, err
+	if kf.ValueExists(groupDesktopEntry, keyStartupWMClass) {
+		e.StartupWMClass, err = kf.String(groupDesktopEntry, keyStartupWMClass)
+		if err != nil {
+			return nil, err
+		}
 	}
-	e.StartupNotify, err = kf.Bool(dent, "StartupNotify")
-	if err != nil {
-		return nil, err
-	}
-	e.StartupWMClass, err = kf.String(dent, "StartupWMClass")
-	if err != nil {
-		return nil, err
+	if e.Type == Link {
+		e.URL, err = kf.String(groupDesktopEntry, keyURL)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	e.X = make(map[string]map[string]string)
@@ -209,7 +276,7 @@ func New(r io.Reader) (*Entry, error) {
 	}
 
 	// Search for extended keys.
-	for _, k := range kf.Keys(dent) {
+	for _, k := range kf.Keys(groupDesktopEntry) {
 		a := strings.SplitN(k, "-", 3)
 		if a[0] != "X" || len(a) < 3 {
 			continue
@@ -217,7 +284,7 @@ func New(r io.Reader) (*Entry, error) {
 		if e.X[a[1]] == nil {
 			e.X[a[1]] = make(map[string]string)
 		}
-		e.X[a[1]][a[2]] = kf.Value(dent, k)
+		e.X[a[1]][a[2]] = kf.Value(groupDesktopEntry, k)
 	}
 
 	return e, nil
@@ -236,24 +303,24 @@ func getActions(kf *keyfile.KeyFile) ([]*Action, error) {
 	var err error
 	var list []string
 
-	list, err = kf.StringList(dent, "Actions")
+	list, err = kf.StringList(groupDesktopEntry, keyActions)
 	if err != nil {
 		return nil, err
 	}
 	for _, a := range list {
-		g := "Desktop Action " + a
+		g := groupDesktopActionPrefix + a
 
 		act = new(Action)
 
-		act.Name, err = kf.String(g, "Name")
+		act.Name, err = kf.String(g, keyName)
 		if err != nil {
 			return nil, err
 		}
-		act.Icon, err = kf.String(g, "Icon")
+		act.Icon, err = kf.String(g, keyIcon)
 		if err != nil {
 			return nil, err
 		}
-		act.Exec, err = kf.String(g, "Exec")
+		act.Exec, err = kf.String(g, keyExec)
 		if err != nil {
 			return nil, err
 		}
