@@ -3,6 +3,7 @@ package keyfile
 import (
 	"bytes"
 	"fmt"
+	"os"
 )
 
 // Locale represents a locale for use in parsing localestrings.
@@ -11,6 +12,21 @@ type Locale struct {
 	country  string
 	encoding string
 	modifier string
+}
+
+var defaultLocale *Locale
+
+func DefaultLocale() *Locale {
+	var err error
+
+	// TODO do a better job of finding the current user's locale.
+	if defaultLocale == nil {
+		defaultLocale, err = ParseLocale(os.Getenv("LC_MESSAGES"))
+		if err != nil {
+			defaultLocale = &Locale{}
+		}
+	}
+	return defaultLocale
 }
 
 // ParseLocale parses a locale in the format:

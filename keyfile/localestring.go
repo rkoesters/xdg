@@ -7,7 +7,7 @@ import (
 // LocaleString returns the value for group 'g' and key 'k' using the
 // system's locale.
 func (kf *KeyFile) LocaleString(g, k string) (string, error) {
-	return kf.LocaleStringWithLocale(g, k, &Locale{})
+	return kf.LocaleStringWithLocale(g, k, DefaultLocale())
 }
 
 // LocaleStringWithLocale returns the value for group 'g', key 'k', and
@@ -21,3 +21,6 @@ func (kf *KeyFile) LocaleStringWithLocale(g, k string, l *Locale) (string, error
 	}
 	return kf.String(g, k)
 }
+
+// TODO LocaleStringList
+// TODO LocaleStringListWithLocale
