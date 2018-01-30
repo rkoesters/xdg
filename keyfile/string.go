@@ -4,10 +4,27 @@ import (
 	"bytes"
 )
 
-// String returns the value with the given group and key. This function
-// is here because underlying data structure of KeyFile may change.
+// String returns the value for group 'g' and key 'k' as a string.
 func (kf *KeyFile) String(g, k string) (string, error) {
 	return unescapeString(kf.Value(g, k))
+}
+
+// StringList returns a slice of strings for group 'g' and key 'k'.
+func (kf *KeyFile) StringList(g, k string) ([]string, error) {
+	vlist, err := kf.ValueList(g, k)
+	if err != nil {
+		return nil, err
+	}
+
+	slist := make([]string, len(vlist), len(vlist))
+	for i, val := range vlist {
+		slist[i], err = unescapeString(val)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return slist, nil
 }
 
 func unescapeString(s string) (string, error) {
