@@ -61,25 +61,54 @@ type UserDirs struct {
 // New creates a new UserDirs struct buy reading from the given
 // io.Reader.
 func New(r io.Reader) (*UserDirs, error) {
-	m, err := keyfile.New(r)
+	kf, err := keyfile.New(r)
 	if err != nil {
 		return nil, err
 	}
 
-	return &UserDirs{
-		Desktop:     parse(m.String("", "XDG_DESKTOP_DIR")),
-		Documents:   parse(m.String("", "XDG_DOCUMENTS_DIR")),
-		Download:    parse(m.String("", "XDG_DOWNLOAD_DIR")),
-		Music:       parse(m.String("", "XDG_MUSIC_DIR")),
-		Pictures:    parse(m.String("", "XDG_PICTURES_DIR")),
-		PublicShare: parse(m.String("", "XDG_PUBLICSHARE_DIR")),
-		Templates:   parse(m.String("", "XDG_TEMPLATES_DIR")),
-		Videos:      parse(m.String("", "XDG_VIDEOS_DIR")),
-	}, nil
+	dirs := new(UserDirs)
+
+	dirs.Desktop, err = parse(kf.String("", "XDG_DESKTOP_DIR"))
+	if err != nil {
+		return nil, err
+	}
+	dirs.Documents, err = parse(kf.String("", "XDG_DOCUMENTS_DIR"))
+	if err != nil {
+		return nil, err
+	}
+	dirs.Download, err = parse(kf.String("", "XDG_DOWNLOAD_DIR"))
+	if err != nil {
+		return nil, err
+	}
+	dirs.Music, err = parse(kf.String("", "XDG_MUSIC_DIR"))
+	if err != nil {
+		return nil, err
+	}
+	dirs.Pictures, err = parse(kf.String("", "XDG_PICTURES_DIR"))
+	if err != nil {
+		return nil, err
+	}
+	dirs.PublicShare, err = parse(kf.String("", "XDG_PUBLICSHARE_DIR"))
+	if err != nil {
+		return nil, err
+	}
+	dirs.Templates, err = parse(kf.String("", "XDG_TEMPLATES_DIR"))
+	if err != nil {
+		return nil, err
+	}
+	dirs.Videos, err = parse(kf.String("", "XDG_VIDEOS_DIR"))
+	if err != nil {
+		return nil, err
+	}
+
+	return dirs, nil
 }
 
 // parse takes a given string and returns it as a path.
-func parse(s string) string {
+func parse(s string, err error) (string, error) {
+	if err != nil {
+		return "", err
+	}
 	s = strings.Trim(s, "\"")
 	if strings.HasPrefix(s, "$HOME") {
 		s = filepath.Join(basedir.Home, strings.TrimPrefix(s, "$HOME"))
@@ -87,5 +116,5 @@ func parse(s string) string {
 	if s == "" {
 		s = basedir.Home
 	}
-	return s
+	return s, nil
 }
