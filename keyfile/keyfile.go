@@ -51,6 +51,24 @@ func New(r io.Reader) (*KeyFile, error) {
 	return kf, nil
 }
 
+// Groups returns a slice of groups that exist for the KeyFile.
+func (kf *KeyFile) Groups() []string {
+	groups := make([]string, 0)
+	for k := range kf.m {
+		groups = append(groups, k)
+	}
+	return groups
+}
+
+// Keys returns a slice of keys that exist for the given group 'g'.
+func (kf *KeyFile) Keys(g string) []string {
+	keys := make([]string, 0)
+	for k := range kf.m[g] {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
 // ValueExists returns a bool indicating whether the given group 'g' and
 // key 'k' have a value.
 func (kf *KeyFile) ValueExists(g, k string) bool {

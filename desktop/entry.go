@@ -101,37 +101,101 @@ const dent = "Desktop Entry"
 // New reads an keyfile.Map formated file from r and returns an Entry that
 // represents the Desktop file that was read.
 func New(r io.Reader) (*Entry, error) {
-	m, err := keyfile.New(r)
+	kf, err := keyfile.New(r)
 	if err != nil {
 		return nil, err
 	}
 
 	// Create the entry.
-	e := &Entry{
-		Type:            ParseType(m.String(dent, "Type")),
-		Version:         m.String(dent, "Version"),
-		Name:            m.String(dent, "Name"),
-		GenericName:     m.String(dent, "GenericName"),
-		Comment:         m.String(dent, "Comment"),
-		Icon:            m.String(dent, "Icon"),
-		URL:             m.String(dent, "URL"),
-		NoDisplay:       m.Bool(dent, "NoDisplay"),
-		Hidden:          m.Bool(dent, "Hidden"),
-		OnlyShowIn:      m.List(dent, "OnlyShowIn"),
-		NotShowIn:       m.List(dent, "NotShowIn"),
-		DBusActivatable: m.Bool(dent, "DBusActivatable"),
-		TryExec:         m.String(dent, "TryExec"),
-		Exec:            m.String(dent, "Exec"),
-		Path:            m.String(dent, "Path"),
-		Terminal:        m.Bool(dent, "Terminal"),
-		Actions:         getActions(m),
-		MimeType:        m.List(dent, "MimeType"),
-		Categories:      m.List(dent, "Categories"),
-		Keywords:        m.List(dent, "Keywords"),
-		StartupNotify:   m.Bool(dent, "StartupNotify"),
-		StartupWMClass:  m.String(dent, "StartupWMClass"),
-		X:               make(map[string]map[string]string),
+	e := new(Entry)
+
+	e.Type = ParseType(kf.Value(dent, "Type"))
+	e.Version, err = kf.String(dent, "Version")
+	if err != nil {
+		return nil, err
 	}
+	e.Name, err = kf.String(dent, "Name")
+	if err != nil {
+		return nil, err
+	}
+	e.GenericName, err = kf.String(dent, "GenericName")
+	if err != nil {
+		return nil, err
+	}
+	e.Comment, err = kf.String(dent, "Comment")
+	if err != nil {
+		return nil, err
+	}
+	e.Icon, err = kf.String(dent, "Icon")
+	if err != nil {
+		return nil, err
+	}
+	e.URL, err = kf.String(dent, "URL")
+	if err != nil {
+		return nil, err
+	}
+	e.NoDisplay, err = kf.Bool(dent, "NoDisplay")
+	if err != nil {
+		return nil, err
+	}
+	e.Hidden, err = kf.Bool(dent, "Hidden")
+	if err != nil {
+		return nil, err
+	}
+	e.OnlyShowIn, err = kf.StringList(dent, "OnlyShowIn")
+	if err != nil {
+		return nil, err
+	}
+	e.NotShowIn, err = kf.StringList(dent, "NotShowIn")
+	if err != nil {
+		return nil, err
+	}
+	e.DBusActivatable, err = kf.Bool(dent, "DBusActivatable")
+	if err != nil {
+		return nil, err
+	}
+	e.TryExec, err = kf.String(dent, "TryExec")
+	if err != nil {
+		return nil, err
+	}
+	e.Exec, err = kf.String(dent, "Exec")
+	if err != nil {
+		return nil, err
+	}
+	e.Path, err = kf.String(dent, "Path")
+	if err != nil {
+		return nil, err
+	}
+	e.Terminal, err = kf.Bool(dent, "Terminal")
+	if err != nil {
+		return nil, err
+	}
+	e.Actions, err = getActions(kf)
+	if err != nil {
+		return nil, err
+	}
+	e.MimeType, err = kf.StringList(dent, "MimeType")
+	if err != nil {
+		return nil, err
+	}
+	e.Categories, err = kf.StringList(dent, "Categories")
+	if err != nil {
+		return nil, err
+	}
+	e.Keywords, err = kf.StringList(dent, "Keywords")
+	if err != nil {
+		return nil, err
+	}
+	e.StartupNotify, err = kf.Bool(dent, "StartupNotify")
+	if err != nil {
+		return nil, err
+	}
+	e.StartupWMClass, err = kf.String(dent, "StartupWMClass")
+	if err != nil {
+		return nil, err
+	}
+
+	e.X = make(map[string]map[string]string)
 
 	// Validate the entry.
 	if e.Type == None {
@@ -145,7 +209,7 @@ func New(r io.Reader) (*Entry, error) {
 	}
 
 	// Search for extended keys.
-	for k, v := range m.M[dent] {
+	for _, k := range kf.Keys(dent) {
 		a := strings.SplitN(k, "-", 3)
 		if a[0] != "X" || len(a) < 3 {
 			continue
@@ -153,7 +217,7 @@ func New(r io.Reader) (*Entry, error) {
 		if e.X[a[1]] == nil {
 			e.X[a[1]] = make(map[string]string)
 		}
-		e.X[a[1]][a[2]] = v
+		e.X[a[1]][a[2]] = kf.Value(dent, k)
 	}
 
 	return e, nil
@@ -166,16 +230,35 @@ type Action struct {
 	Exec string
 }
 
-func getActions(m *keyfile.Map) []*Action {
+func getActions(kf *keyfile.KeyFile) ([]*Action, error) {
 	var acts []*Action
+	var act *Action
+	var err error
+	var list []string
 
-	for _, a := range m.List(dent, "Actions") {
-		g := "Desktop Action " + a
-		acts = append(acts, &Action{
-			Name: m.String(g, "Name"),
-			Icon: m.String(g, "Icon"),
-			Exec: m.String(g, "Exec"),
-		})
+	list, err = kf.StringList(dent, "Actions")
+	if err != nil {
+		return nil, err
 	}
-	return acts
+	for _, a := range list {
+		g := "Desktop Action " + a
+
+		act = new(Action)
+
+		act.Name, err = kf.String(g, "Name")
+		if err != nil {
+			return nil, err
+		}
+		act.Icon, err = kf.String(g, "Icon")
+		if err != nil {
+			return nil, err
+		}
+		act.Exec, err = kf.String(g, "Exec")
+		if err != nil {
+			return nil, err
+		}
+
+		acts = append(acts, act)
+	}
+	return acts, nil
 }
