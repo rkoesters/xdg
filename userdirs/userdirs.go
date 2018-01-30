@@ -4,7 +4,7 @@ package userdirs
 
 import (
 	"github.com/rkoesters/xdg/basedir"
-	"github.com/rkoesters/xdg/ini"
+	"github.com/rkoesters/xdg/keyfile"
 	"io"
 	"os"
 	"path/filepath"
@@ -61,7 +61,7 @@ type UserDirs struct {
 // New creates a new UserDirs struct buy reading from the given
 // io.Reader.
 func New(r io.Reader) (*UserDirs, error) {
-	m, err := ini.New(r)
+	m, err := keyfile.New(r)
 	if err != nil {
 		return nil, err
 	}

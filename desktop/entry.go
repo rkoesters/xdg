@@ -2,7 +2,7 @@ package desktop
 
 import (
 	"errors"
-	"github.com/rkoesters/xdg/ini"
+	"github.com/rkoesters/xdg/keyfile"
 	"io"
 	"strings"
 )
@@ -21,7 +21,7 @@ var (
 
 	// ErrMissingURL means that the desktop entry is missing the URL
 	// key, which is required by the type Link.
-	ErrMissingURL  = errors.New("missing entry url")
+	ErrMissingURL = errors.New("missing entry url")
 )
 
 // Entry represents a desktop entry file.
@@ -98,10 +98,10 @@ type Entry struct {
 
 const dent = "Desktop Entry"
 
-// New reads an ini.Map formated file from r and returns an Entry that
+// New reads an keyfile.Map formated file from r and returns an Entry that
 // represents the Desktop file that was read.
 func New(r io.Reader) (*Entry, error) {
-	m, err := ini.New(r)
+	m, err := keyfile.New(r)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ type Action struct {
 	Exec string
 }
 
-func getActions(m *ini.Map) []*Action {
+func getActions(m *keyfile.Map) []*Action {
 	var acts []*Action
 
 	for _, a := range m.List(dent, "Actions") {

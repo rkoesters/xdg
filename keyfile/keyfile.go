@@ -1,9 +1,9 @@
-// Package ini implements the ini file format that is used in many of
-// the xdg specs.
+// Package keyfile implements the ini file format that is used in many
+// of the xdg specs.
 //
 // WARNING: This package is meant for internal use and the API may
 // change without warning.
-package ini
+package keyfile
 
 import (
 	"bufio"

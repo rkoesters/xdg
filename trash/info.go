@@ -2,7 +2,7 @@ package trash
 
 import (
 	"fmt"
-	"github.com/rkoesters/xdg/ini"
+	"github.com/rkoesters/xdg/keyfile"
 	"io"
 	"net/url"
 	"strings"
@@ -22,7 +22,7 @@ type Info struct {
 
 // NewInfo creates a new Info using the given io.Reader.
 func NewInfo(r io.Reader) (*Info, error) {
-	m, err := ini.New(r)
+	m, err := keyfile.New(r)
 	if err != nil {
 		return nil, err
 	}
