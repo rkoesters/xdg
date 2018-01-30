@@ -22,17 +22,25 @@ type Info struct {
 
 // NewInfo creates a new Info using the given io.Reader.
 func NewInfo(r io.Reader) (*Info, error) {
-	m, err := keyfile.New(r)
+	kf, err := keyfile.New(r)
 	if err != nil {
 		return nil, err
 	}
 
 	info := new(Info)
-	info.Path, err = url.QueryUnescape(m.String(tinfo, "Path"))
+	tmp, err := kf.String(tinfo, "Path")
 	if err != nil {
 		return nil, err
 	}
-	info.DeletionDate, err = time.Parse(rfc3339, m.String(tinfo, "DeletionDate"))
+	info.Path, err = url.QueryUnescape(tmp)
+	if err != nil {
+		return nil, err
+	}
+	tmp, err = kf.String(tinfo, "DeletionDate")
+	if err != nil {
+		return nil, err
+	}
+	info.DeletionDate, err = time.Parse(rfc3339, tmp)
 	if err != nil {
 		return nil, err
 	}
