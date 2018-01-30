@@ -18,19 +18,22 @@ man = bear = pig
 `
 
 func TestParser(t *testing.T) {
-	m, err := New(strings.NewReader(testParser))
+	kf, err := New(strings.NewReader(testParser))
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(m)
+	t.Log(kf)
 
-	if m.String("Header 1", "key") != "value" {
+	s, err := kf.String("Header 1", "key")
+	if s != "value" || err != nil {
 		t.Error("basic usage")
 	}
-	if m.String("Header 1", "cat") != "dog" {
+	s, err = kf.String("Header 1", "cat")
+	if s != "dog" || err != nil {
 		t.Error("whitespace")
 	}
-	if m.String("Header 2", "man") != "bear = pig" {
+	s, err = kf.String("Header 2", "man")
+	if s != "bear = pig" || err != nil {
 		t.Error("equal signs")
 	}
 }
@@ -59,27 +62,29 @@ list=man;bear;pig;
 `
 
 func TestBool(t *testing.T) {
-	m, err := New(strings.NewReader(testFormat))
+	kf, err := New(strings.NewReader(testFormat))
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(m)
+	t.Log(kf)
 
-	if m.Bool("Header 1", "yes") != true {
+	b, err := kf.Bool("Header 1", "yes")
+	if b != true || err != nil {
 		t.Fail()
 	}
-	if m.Bool("Header 1", "no") != false {
+	b, err = kf.Bool("Header 1", "no")
+	if b != false || err != nil {
 		t.Fail()
 	}
 }
 
 func TestList(t *testing.T) {
-	m, err := New(strings.NewReader(testFormat))
+	kf, err := New(strings.NewReader(testFormat))
 	if err != nil {
 		t.Error(err)
 	}
 	expect := []string{"man", "bear", "pig"}
-	actual := m.List("Header 1", "list")
+	actual := kf.List("Header 1", "list")
 	t.Log(expect)
 	t.Log(actual)
 	if !reflect.DeepEqual(actual, expect) {

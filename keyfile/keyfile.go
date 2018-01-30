@@ -9,7 +9,6 @@ import (
 	"bufio"
 	"errors"
 	"io"
-	"strconv"
 	"strings"
 )
 
@@ -54,12 +53,6 @@ func New(r io.Reader) (*KeyFile, error) {
 // Value returns the raw string for group 'g' and key 'k'.
 func (kf *KeyFile) Value(g, k string) string {
 	return kf.m[g][k]
-}
-
-// Bool returns the value as a bool.
-func (kf *KeyFile) Bool(g, k string) bool {
-	b, _ := strconv.ParseBool(kf.Value(g, k))
-	return b
 }
 
 // List returns the value as a slice of strings.
