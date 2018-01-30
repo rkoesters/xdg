@@ -51,6 +51,13 @@ func New(r io.Reader) (*KeyFile, error) {
 	return kf, nil
 }
 
+// ValueExists returns a bool indicating whether the given group 'g' and
+// key 'k' have a value.
+func (kf *KeyFile) ValueExists(g, k string) bool {
+	_, exists := kf.m[g][k]
+	return exists
+}
+
 // Value returns the raw string for group 'g' and key 'k'.
 func (kf *KeyFile) Value(g, k string) string {
 	return kf.m[g][k]
