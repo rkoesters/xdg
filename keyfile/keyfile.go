@@ -7,6 +7,7 @@ package keyfile
 
 import (
 	"bufio"
+	"bytes"
 	"errors"
 	"io"
 	"strings"
@@ -55,14 +56,53 @@ func (kf *KeyFile) Value(g, k string) string {
 	return kf.m[g][k]
 }
 
-// List returns the value as a slice of strings.
-func (kf *KeyFile) List(g, k string) []string {
-	l := strings.Split(kf.Value(g, k), ";")
-	for i := 0; i < len(l); i++ {
-		if l[i] == "" {
-			l = append(l[:i], l[i+1:]...)
-			i--
+// ValueList returns a slice of raw strings for group 'g' and key 'k'.
+func (kf *KeyFile) ValueList(g, k string) ([]string, error) {
+	var buf bytes.Buffer
+	var isEscaped bool
+	var list []string
+	var err error
+
+	for _, r := range kf.Value(g, k) {
+		if isEscaped {
+			if r == ';' {
+				_, err = buf.WriteRune(';')
+				if err != nil {
+					return nil, err
+				}
+			} else {
+				// The escape sequence isn't '\;', so we want to copy it
+				// over as is.
+				_, err = buf.WriteRune('\\')
+				if err != nil {
+					return nil, err
+				}
+				_, err = buf.WriteRune(r)
+				if err != nil {
+					return nil, err
+				}
+			}
+			isEscaped = false
+		} else {
+			switch r {
+			case '\\':
+				isEscaped = true
+			case ';':
+				list = append(list, buf.String())
+				buf.Reset()
+			default:
+				buf.WriteRune(r)
+			}
 		}
 	}
-	return l
+	if isEscaped {
+		return nil, ErrUnexpectedEndOfString
+	}
+
+	last := buf.String()
+	if last != "" {
+		list = append(list, buf.String())
+	}
+
+	return list, nil
 }

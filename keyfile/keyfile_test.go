@@ -84,7 +84,10 @@ func TestList(t *testing.T) {
 		t.Error(err)
 	}
 	expect := []string{"man", "bear", "pig"}
-	actual := kf.List("Header 1", "list")
+	actual, err := kf.ValueList("Header 1", "list")
+	if err != nil {
+		t.Error(err)
+	}
 	t.Log(expect)
 	t.Log(actual)
 	if !reflect.DeepEqual(actual, expect) {
