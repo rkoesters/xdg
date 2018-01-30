@@ -35,11 +35,11 @@ func New(r io.Reader) (*KeyFile, error) {
 		case strings.HasPrefix(line, "#"):
 			// Comment.
 		case line[0:1] == "[" && line[len(line)-1:] == "]":
-			// New section.
+			// Group header.
 			hdr = line[1 : len(line)-1]
 			kf.m[hdr] = make(map[string]string)
 		case strings.Contains(line, "="):
-			// Key=Value pair.
+			// Entry.
 			p := strings.SplitN(line, "=", 2)
 			p[0] = strings.TrimSpace(p[0])
 			p[1] = strings.TrimSpace(p[1])
@@ -51,21 +51,20 @@ func New(r io.Reader) (*KeyFile, error) {
 	return kf, nil
 }
 
-// String returns the value with the given group and key. This function
-// is here because underlying data structure of KeyFile may change.
-func (kf *KeyFile) String(g, k string) string {
+// Value returns the raw string for group 'g' and key 'k'.
+func (kf *KeyFile) Value(g, k string) string {
 	return kf.m[g][k]
 }
 
 // Bool returns the value as a bool.
 func (kf *KeyFile) Bool(g, k string) bool {
-	b, _ := strconv.ParseBool(kf.String(g, k))
+	b, _ := strconv.ParseBool(kf.Value(g, k))
 	return b
 }
 
 // List returns the value as a slice of strings.
 func (kf *KeyFile) List(g, k string) []string {
-	l := strings.Split(kf.String(g, k), ";")
+	l := strings.Split(kf.Value(g, k), ";")
 	for i := 0; i < len(l); i++ {
 		if l[i] == "" {
 			l = append(l[:i], l[i+1:]...)
