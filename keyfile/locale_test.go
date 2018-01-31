@@ -63,3 +63,11 @@ func TestParseLocale(t *testing.T) {
 		t.Errorf("'%v' != '%v'", localeStr, locale.String())
 	}
 }
+
+func TestDefaultLocale(t *testing.T) {
+	locale := DefaultLocale()
+	if locale == nil {
+		t.FailNow()
+	}
+	t.Log(locale.String())
+}

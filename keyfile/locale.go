@@ -17,12 +17,20 @@ type Locale struct {
 var defaultLocale *Locale
 
 func DefaultLocale() *Locale {
+	var val string
 	var err error
 
-	// TODO do a better job of finding the current user's locale.
 	if defaultLocale == nil {
-		defaultLocale, err = ParseLocale(os.Getenv("LC_MESSAGES"))
-		if err != nil {
+		if val = os.Getenv("LANGUAGE"); val != "" {
+			defaultLocale, err = ParseLocale(val)
+		} else if val = os.Getenv("LC_ALL"); val != "" {
+			defaultLocale, err = ParseLocale(val)
+		} else if val = os.Getenv("LC_MESSAGES"); val != "" {
+			defaultLocale, err = ParseLocale(val)
+		} else if val = os.Getenv("LANG"); val != "" {
+			defaultLocale, err = ParseLocale(val)
+		}
+		if err != nil || defaultLocale == nil {
 			defaultLocale = &Locale{}
 		}
 	}
