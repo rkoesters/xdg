@@ -132,3 +132,36 @@ func TestPrintIt(t *testing.T) {
 
 	t.Logf("%#v", d)
 }
+
+const linkExample = `
+[Desktop Entry]
+Version=1.0
+Type=Link
+Name=Go
+Name[en_US]=Go
+URL=http://www.golang.org/
+`
+
+func TestLinkExample(t *testing.T) {
+	d, err := New(strings.NewReader(linkExample))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if d.Type != Link {
+		t.Error("Type")
+	}
+
+	arr := map[string]string{
+		d.Version: "1.0",
+		d.Name:    "Go",
+		d.URL:     "http://www.golang.org/",
+	}
+	for act, exp := range arr {
+		if act != exp {
+			t.Log("expected: " + exp)
+			t.Log("actual:   " + act)
+			t.Fail()
+		}
+	}
+}

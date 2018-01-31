@@ -6,6 +6,7 @@ import (
 
 func TestType(t *testing.T) {
 	m := map[Type]string{
+		None:        "",
 		Application: "Application",
 		Link:        "Link",
 		Directory:   "Directory",

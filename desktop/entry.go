@@ -143,12 +143,12 @@ func New(r io.Reader) (*Entry, error) {
 			return nil, err
 		}
 	}
-	e.Name, err = kf.String(groupDesktopEntry, keyName)
+	e.Name, err = kf.LocaleString(groupDesktopEntry, keyName)
 	if err != nil {
 		return nil, err
 	}
 	if kf.ValueExists(groupDesktopEntry, keyGenericName) {
-		e.GenericName, err = kf.String(groupDesktopEntry, keyGenericName)
+		e.GenericName, err = kf.LocaleString(groupDesktopEntry, keyGenericName)
 		if err != nil {
 			return nil, err
 		}
@@ -160,13 +160,13 @@ func New(r io.Reader) (*Entry, error) {
 		}
 	}
 	if kf.ValueExists(groupDesktopEntry, keyComment) {
-		e.Comment, err = kf.String(groupDesktopEntry, keyComment)
+		e.Comment, err = kf.LocaleString(groupDesktopEntry, keyComment)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if kf.ValueExists(groupDesktopEntry, keyIcon) {
-		e.Icon, err = kf.String(groupDesktopEntry, keyIcon)
+		e.Icon, err = kf.LocaleString(groupDesktopEntry, keyIcon)
 		if err != nil {
 			return nil, err
 		}
