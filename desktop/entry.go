@@ -238,7 +238,7 @@ func New(r io.Reader) (*Entry, error) {
 		}
 	}
 	if kf.ValueExists(groupDesktopEntry, keyKeywords) {
-		e.Keywords, err = kf.StringList(groupDesktopEntry, keyKeywords)
+		e.Keywords, err = kf.LocaleStringList(groupDesktopEntry, keyKeywords)
 		if err != nil {
 			return nil, err
 		}
