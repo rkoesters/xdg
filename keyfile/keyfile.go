@@ -126,7 +126,7 @@ func (kf *KeyFile) ValueList(g, k string) ([]string, error) {
 
 	last := buf.String()
 	if last != "" {
-		list = append(list, buf.String())
+		list = append(list, last)
 	}
 
 	return list, nil
