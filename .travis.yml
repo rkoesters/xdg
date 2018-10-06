@@ -5,3 +5,8 @@ go:
   - "1.7.x"  # debian stable
   - "1.10.x" # ubuntu 18.04
   - "1.x"    # latest release
+
+addons:
+  apt:
+    packages:
+      - xdg-user-dirs
