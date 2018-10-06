@@ -3,6 +3,8 @@ xdg
 
 Package xdg provides access to the XDG specs.
 
+[![Build Status](https://travis-ci.org/rkoesters/xdg.svg?branch=master)](https://travis-ci.org/rkoesters/xdg)
+
 Documentation
 -------------
 
