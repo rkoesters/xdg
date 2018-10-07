@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-// TODO: Add methods to Entry: Launch(uri string...).
-
 var (
 	// ErrMissingType means that the desktop entry is missing the
 	// Type key, which is always required.
@@ -90,7 +88,7 @@ type Entry struct {
 	// The path to an executable to test if the program is
 	// installed.
 	TryExec string
-	// Program to execute. TODO: talk about arguments.
+	// Program to execute.
 	Exec string
 	// The path that should be the programs working directory.
 	Path string
