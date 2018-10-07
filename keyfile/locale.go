@@ -17,10 +17,10 @@ type Locale struct {
 var defaultLocale *Locale
 
 func DefaultLocale() *Locale {
-	var val string
-	var err error
-
 	if defaultLocale == nil {
+		var val string
+		var err error
+
 		if val = os.Getenv("LANGUAGE"); val != "" {
 			defaultLocale, err = ParseLocale(val)
 		} else if val = os.Getenv("LC_ALL"); val != "" {
@@ -82,6 +82,15 @@ func ParseLocale(s string) (*Locale, error) {
 	}
 
 	return l, nil
+}
+
+func (l *Locale) clone() *Locale {
+	return &Locale{
+		lang:     l.lang,
+		country:  l.country,
+		encoding: l.encoding,
+		modifier: l.modifier,
+	}
 }
 
 // String returns the given locale as a formatted string. The returned
