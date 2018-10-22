@@ -107,7 +107,8 @@ type Entry struct {
 
 	// Whether the program will send a "remove" message when started
 	// with the DESKTOP_STARTUP_ID env variable is set.
-	// TODO: needs be explaination, I don't really know what it
+	//
+	// TODO: needs more explanation, I don't really know what it
 	// means.
 	StartupNotify bool
 	// The string that the program will set as WM Class or WM name

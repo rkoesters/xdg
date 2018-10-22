@@ -96,8 +96,8 @@ func (kf *KeyFile) ValueList(g, k string) ([]string, error) {
 					return nil, err
 				}
 			} else {
-				// The escape sequence isn't '\;', so we want to copy it
-				// over as is.
+				// The escape sequence isn't '\;', so we
+				// want to copy it over as is.
 				_, err = buf.WriteRune('\\')
 				if err != nil {
 					return nil, err

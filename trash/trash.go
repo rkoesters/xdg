@@ -15,9 +15,9 @@ type Dir struct {
 
 // New creates a new Trash directory.
 func New(root string) (*Dir, error) {
-	// TODO: We need to check permissions and stuff on creation of a new
-	// trash. This means we need to check for a sticky bit and a bunch of
-	// other stuff.
+	// TODO: We need to check permissions and stuff on creation of a
+	// new trash. This means we need to check for a sticky bit and a
+	// bunch of other stuff.
 	panic("TODO")
 }
 

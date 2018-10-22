@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-// Locale represents a locale for use in parsing localestrings.
+// Locale represents a locale for use in parsing translatable strings.
 type Locale struct {
 	lang     string
 	country  string
