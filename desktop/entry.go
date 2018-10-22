@@ -123,9 +123,15 @@ type Entry struct {
 	X map[string]map[string]string
 }
 
-// New reads an keyfile.Map formated file from r and returns an Entry that
-// represents the Desktop file that was read.
+// New reads a desktop file from r and returns an Entry that represents
+// the desktop file using the default locale.
 func New(r io.Reader) (*Entry, error) {
+	return NewWithLocale(r, keyfile.DefaultLocale())
+}
+
+// NewWithLocale reads a desktop file from r and returns an Entry that
+// represents the desktop file using the given locale l.
+func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
 	kf, err := keyfile.New(r)
 	if err != nil {
 		return nil, err
@@ -141,12 +147,12 @@ func New(r io.Reader) (*Entry, error) {
 			return nil, err
 		}
 	}
-	e.Name, err = kf.LocaleString(groupDesktopEntry, keyName)
+	e.Name, err = kf.LocaleStringWithLocale(groupDesktopEntry, keyName, l)
 	if err != nil {
 		return nil, err
 	}
 	if kf.ValueExists(groupDesktopEntry, keyGenericName) {
-		e.GenericName, err = kf.LocaleString(groupDesktopEntry, keyGenericName)
+		e.GenericName, err = kf.LocaleStringWithLocale(groupDesktopEntry, keyGenericName, l)
 		if err != nil {
 			return nil, err
 		}
@@ -158,13 +164,13 @@ func New(r io.Reader) (*Entry, error) {
 		}
 	}
 	if kf.ValueExists(groupDesktopEntry, keyComment) {
-		e.Comment, err = kf.LocaleString(groupDesktopEntry, keyComment)
+		e.Comment, err = kf.LocaleStringWithLocale(groupDesktopEntry, keyComment, l)
 		if err != nil {
 			return nil, err
 		}
 	}
 	if kf.ValueExists(groupDesktopEntry, keyIcon) {
-		e.Icon, err = kf.LocaleString(groupDesktopEntry, keyIcon)
+		e.Icon, err = kf.LocaleStringWithLocale(groupDesktopEntry, keyIcon, l)
 		if err != nil {
 			return nil, err
 		}
@@ -236,7 +242,7 @@ func New(r io.Reader) (*Entry, error) {
 		}
 	}
 	if kf.ValueExists(groupDesktopEntry, keyKeywords) {
-		e.Keywords, err = kf.LocaleStringList(groupDesktopEntry, keyKeywords)
+		e.Keywords, err = kf.LocaleStringListWithLocale(groupDesktopEntry, keyKeywords, l)
 		if err != nil {
 			return nil, err
 		}
