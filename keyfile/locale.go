@@ -16,6 +16,7 @@ type Locale struct {
 
 var defaultLocale *Locale
 
+// DefaultLocale returns the locale specified by the environment.
 func DefaultLocale() *Locale {
 	if defaultLocale == nil {
 		var val string
