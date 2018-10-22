@@ -13,4 +13,4 @@ addons:
 
 before_script:
   - xdg-user-dirs-update
-  - mkdir -p $HOME/.local/share/Trash/files
+  - mkdir -p "$HOME/.local/share/Trash/files"
