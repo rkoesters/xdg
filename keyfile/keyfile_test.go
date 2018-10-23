@@ -68,6 +68,7 @@ yes=true
 no=false
 
 list=man;bear;pig;
+list2=man\;bear;pig\r;
 `
 
 func TestBool(t *testing.T) {
@@ -94,6 +95,16 @@ func TestList(t *testing.T) {
 	}
 	expect := []string{"man", "bear", "pig"}
 	actual, err := kf.ValueList("Header 1", "list")
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(expect)
+	t.Log(actual)
+	if !reflect.DeepEqual(actual, expect) {
+		t.Fail()
+	}
+	expect = []string{"man;bear", "pig\\r"}
+	actual, err = kf.ValueList("Header 1", "list2")
 	if err != nil {
 		t.Error(err)
 	}
