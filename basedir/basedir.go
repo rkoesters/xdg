@@ -1,4 +1,6 @@
-// Package basedir provides access to XDG base directory spec.
+// Package basedir provides access to XDG base directory spec. For more
+// information, please see the spec:
+// https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
 package basedir
 
 import (
