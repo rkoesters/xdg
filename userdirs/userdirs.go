@@ -1,5 +1,6 @@
 // Package userdirs provides easy access to "well known" user
-// directories.
+// directories. For more information, see:
+// https://www.freedesktop.org/wiki/Software/xdg-user-dirs/
 package userdirs
 
 import (
