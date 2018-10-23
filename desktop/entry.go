@@ -267,8 +267,6 @@ func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
 		}
 	}
 
-	e.X = make(map[string]map[string]string)
-
 	// Validate the entry.
 	if e.Type == None {
 		return nil, ErrMissingType
@@ -281,6 +279,7 @@ func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
 	}
 
 	// Search for extended keys.
+	e.X = make(map[string]map[string]string)
 	for _, k := range kf.Keys(groupDesktopEntry) {
 		a := strings.SplitN(k, "-", 3)
 		if a[0] != "X" || len(a) < 3 {
