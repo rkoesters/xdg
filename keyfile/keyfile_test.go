@@ -36,6 +36,15 @@ func TestParser(t *testing.T) {
 	if s != "bear = pig" || err != nil {
 		t.Error("equal signs")
 	}
+
+	// Groups() and Keys() should always lead to valid values.
+	for _, group := range kf.Groups() {
+		for _, key := range kf.Keys(group) {
+			if !kf.ValueExists(group, key) {
+				t.Errorf("ValueExists == false for group='%v' key='%v'", group, key)
+			}
+		}
+	}
 }
 
 const testInvalid = `
