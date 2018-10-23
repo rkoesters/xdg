@@ -165,3 +165,30 @@ func TestLinkExample(t *testing.T) {
 		}
 	}
 }
+
+func TestEntryValidation(t *testing.T) {
+	_, err := New(strings.NewReader("[Desktop Entry]\n"))
+	if err != ErrMissingType {
+		t.Errorf("expected ErrMissingType, got %v", err)
+	}
+
+	_, err = New(strings.NewReader("[Desktop Entry]\nType=Application\n"))
+	if err != ErrMissingName {
+		t.Errorf("expected ErrMissingName, got %v", err)
+	}
+
+	_, err = New(strings.NewReader("[Desktop Entry]\nType=Link\n"))
+	if err != ErrMissingName {
+		t.Errorf("expected ErrMissingName, got %v", err)
+	}
+
+	_, err = New(strings.NewReader("[Desktop Entry]\nType=Directory\n"))
+	if err != ErrMissingName {
+		t.Errorf("expected ErrMissingName, got %v", err)
+	}
+
+	_, err = New(strings.NewReader("[Desktop Entry]\nType=Link\nName=No URL\n"))
+	if err != ErrMissingURL {
+		t.Errorf("expected ErrMissingURL, got %v", err)
+	}
+}
