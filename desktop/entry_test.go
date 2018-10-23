@@ -192,3 +192,15 @@ func TestEntryValidation(t *testing.T) {
 		t.Errorf("expected ErrMissingURL, got %v", err)
 	}
 }
+
+func TestInvalidFileFormat(t *testing.T) {
+	_, err := New(strings.NewReader(""))
+	if err == nil {
+		t.Error("err == nil on empty file")
+	}
+
+	_, err = New(strings.NewReader("hello, world!"))
+	if err == nil {
+		t.Error("err == nil on invalid file")
+	}
+}
