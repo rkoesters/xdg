@@ -29,32 +29,32 @@ func TestBaseDir(t *testing.T) {
 	}
 }
 
-func TestGetpath(t *testing.T) {
+func TestGetPath(t *testing.T) {
 	const notSet = "not set"
-	if getpath("HOME", notSet) == notSet {
+	if getPath("HOME", notSet) == notSet {
 		t.Error("Couldn't get HOME")
 	}
-	if getpath("does_not_exist", notSet) != notSet {
+	if getPath("does_not_exist", notSet) != notSet {
 		t.Error("does_not_exist exists")
 	}
-	if getpath("USER", notSet) != notSet {
+	if getPath("USER", notSet) != notSet {
 		t.Error("USER appears to be an absolute path")
 	}
 }
 
 func TestGetpathlist(t *testing.T) {
-	if getpathlist("PATH", nil) == nil {
+	if getPathList("PATH", nil) == nil {
 		t.Error("Couldn't get PATH")
 	}
-	if getpathlist("does_not_exist", nil) != nil {
+	if getPathList("does_not_exist", nil) != nil {
 		t.Error("does_not_exist exists")
 	}
 	err := os.Setenv("xdg_test_var", "/a:c:/a/b:d/f")
 	if err != nil {
 		t.Error(err)
 	}
-	testVar := getpathlist("xdg_test_var", nil)
+	testVar := getPathList("xdg_test_var", nil)
 	if testVar[0] != "/a" || testVar[1] != "/a/b" {
-		t.Error("getpathlist returned relative paths")
+		t.Error("getPathList returned relative paths")
 	}
 }
