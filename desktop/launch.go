@@ -176,6 +176,9 @@ func (de *Entry) expandExec(args ...string) ([][]string, error) {
 func getTerminalPrefix() ([]string, error) {
 	terminals := [][]string{
 		{"gnome-terminal", "-x"},
+		{"konsole", "-e"},
+		{"io.elementary.terminal", "-e"},
+		{"pantheon-terminal", "-e"},
 		{"nxterm", "-e"},
 		{"color-xterm", "-e"},
 		{"rxvt", "-e"},
