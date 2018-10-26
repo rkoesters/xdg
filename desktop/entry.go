@@ -102,6 +102,8 @@ type Entry struct {
 	// A slice of categories that the desktop entry should be shown
 	// in in a menu.
 	Categories []string
+	// A slice of interfaces that this application implements.
+	Implements []string
 	// A slice of keywords.
 	Keywords []string
 
@@ -235,6 +237,12 @@ func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
 	}
 	if kf.ValueExists(groupDesktopEntry, keyCategories) {
 		e.Categories, err = kf.StringList(groupDesktopEntry, keyCategories)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if kf.ValueExists(groupDesktopEntry, keyImplements) {
+		e.Implements, err = kf.StringList(groupDesktopEntry, keyImplements)
 		if err != nil {
 			return nil, err
 		}
