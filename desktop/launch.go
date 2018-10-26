@@ -18,7 +18,7 @@ func (de *Entry) Launch(uris ...string) error {
 	}
 
 	for _, argv := range argvs {
-		cmd := exec.Command(argv[0], argv...)
+		cmd := exec.Command(argv[0], argv[1:]...)
 
 		cmd.Dir = de.Path
 
