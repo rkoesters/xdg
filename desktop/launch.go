@@ -77,9 +77,8 @@ func (de *Entry) expandExec(args ...string) ([][]string, error) {
 				}
 				if err != nil {
 					return nil, err
-				} else {
-					isEscaped = false
 				}
+				isEscaped = false
 			} else if isQuoted {
 				// TODO what are all the quoting rules?
 				switch r {
@@ -127,6 +126,7 @@ func (de *Entry) expandExec(args ...string) ([][]string, error) {
 				case 'c':
 					buf.WriteString(de.Name)
 				case 'k':
+					buf.WriteString(de.filename)
 				case 'v':
 					// deprecated
 				case 'm':
@@ -136,9 +136,8 @@ func (de *Entry) expandExec(args ...string) ([][]string, error) {
 				}
 				if err != nil {
 					return nil, err
-				} else {
-					isSpecialField = false
 				}
+				isSpecialField = false
 			} else {
 				switch {
 				case r == '"':
@@ -162,13 +161,12 @@ func (de *Entry) expandExec(args ...string) ([][]string, error) {
 		}
 		if isEscaped || isQuoted || isSpecialField {
 			return nil, errors.New("unexpected end of string")
-		} else {
-			arg := buf.String()
-			buf.Reset()
+		}
+		arg := buf.String()
+		buf.Reset()
 
-			if arg != "" {
-				ret[i] = append(ret[i], arg)
-			}
+		if arg != "" {
+			ret[i] = append(ret[i], arg)
 		}
 	}
 

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/rkoesters/xdg/keyfile"
 	"io"
+	"os"
 	"strings"
 )
 
@@ -53,6 +54,11 @@ const (
 
 // Entry represents a desktop entry file.
 type Entry struct {
+	// filename is the original filename of the desktop entry. This
+	// is only set when created with NewFromFile or
+	// NewFromFileWithLocale. Use for '%k' in Exec key.
+	filename string
+
 	// The type of desktop entry. It can be: Application, Link, or
 	// Directory.
 	Type Type
@@ -297,6 +303,30 @@ func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
 	}
 
 	return e, nil
+}
+
+// NewFromFile creates an Entry from the file given by path.
+func NewFromFile(path string) (*Entry, error) {
+	return NewFromFileWithLocale(path, keyfile.DefaultLocale())
+}
+
+// NewFromFileWithLocale creates an Entry from the file given by path
+// with locale l.
+func NewFromFileWithLocale(path string, l *keyfile.Locale) (*Entry, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	kf, err := NewWithLocale(f, l)
+	if err != nil {
+		return nil, err
+	}
+
+	kf.filename = path
+
+	return kf, nil
 }
 
 // Action is an Action group.
