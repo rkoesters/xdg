@@ -4,6 +4,7 @@ xdg
 Package xdg provides access to the XDG specs.
 
 [![Build Status](https://travis-ci.org/rkoesters/xdg.svg?branch=master)](https://travis-ci.org/rkoesters/xdg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/rkoesters/xdg)](https://goreportcard.com/report/github.com/rkoesters/xdg)
 
 Documentation
 -------------
