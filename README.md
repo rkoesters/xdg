@@ -27,11 +27,11 @@ Testing
 
 Tests can be run with `go test`.
 
-The tests for the `trash` package expect the trash to exist
+The tests for the xdg/trash package expect the trash to exist
 (`$XDG_DATA_HOME/Trash/files` (or `$HOME/.local/share/Trash/files` if
 `$XDG_DATA_HOME` is undefined)).
 
-The tests for the `userdirs` require the `xdg-user-dir` command.
+The tests for the xdg/userdirs require the `xdg-user-dir` command.
 
 TODO
 ----
