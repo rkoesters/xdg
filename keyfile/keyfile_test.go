@@ -61,35 +61,15 @@ func TestInvalid(t *testing.T) {
 	}
 }
 
-const testFormat = `
+const testList = `
 # This tests that the formatting functions work.
 [Header 1]
-yes=true
-no=false
-
 list=man;bear;pig;
 list2=man\;bear;pig\r;
 `
 
-func TestBool(t *testing.T) {
-	kf, err := New(strings.NewReader(testFormat))
-	if err != nil {
-		t.Error(err)
-	}
-	t.Log(kf)
-
-	b, err := kf.Bool("Header 1", "yes")
-	if b != true || err != nil {
-		t.Fail()
-	}
-	b, err = kf.Bool("Header 1", "no")
-	if b != false || err != nil {
-		t.Fail()
-	}
-}
-
 func TestList(t *testing.T) {
-	kf, err := New(strings.NewReader(testFormat))
+	kf, err := New(strings.NewReader(testList))
 	if err != nil {
 		t.Error(err)
 	}
