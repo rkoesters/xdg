@@ -38,3 +38,4 @@ TODO
 ----
 
 - autostart
+- desktop.Launch (in progress on desktop-launch branch)
