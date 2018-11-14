@@ -23,6 +23,10 @@ func TestLocaleString(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+	if s != "Value 0" {
+		t.Errorf("expected=Value 0 real=%v", s)
+	}
+
 
 	s, err = kf.LocaleStringWithLocale("Header 1", "Key", &Locale{})
 	if err != nil {
