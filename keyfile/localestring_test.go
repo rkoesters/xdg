@@ -19,12 +19,12 @@ func TestLocaleString(t *testing.T) {
 	}
 	t.Log(kf)
 
-	s, err := kf.LocaleString("Header 1", "Key")
+	_, err = kf.LocaleString("Header 1", "Key")
 	if err != nil {
 		t.Error(err)
 	}
 
-	s, err = kf.LocaleStringWithLocale("Header 1", "Key", &Locale{})
+	s, err := kf.LocaleStringWithLocale("Header 1", "Key", &Locale{})
 	if err != nil {
 		t.Error(err)
 	}

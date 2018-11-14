@@ -8,7 +8,6 @@ package keyfile
 import (
 	"bufio"
 	"bytes"
-	"errors"
 	"io"
 	"strings"
 )
@@ -45,7 +44,7 @@ func New(r io.Reader) (*KeyFile, error) {
 			p[1] = strings.TrimSpace(p[1])
 			kf.m[hdr][p[0]] = p[1]
 		default:
-			return nil, errors.New("invalid format")
+			return nil, ErrInvalid
 		}
 	}
 	return kf, nil

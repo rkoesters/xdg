@@ -56,7 +56,7 @@ hello world!
 
 func TestInvalid(t *testing.T) {
 	_, err := New(strings.NewReader(testInvalid))
-	if err.Error() != "invalid format" {
+	if err != ErrInvalid {
 		t.Fail()
 	}
 }

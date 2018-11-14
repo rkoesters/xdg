@@ -22,7 +22,20 @@ Documentation
 * [xdg/userdirs](https://godoc.org/github.com/rkoesters/xdg/userdirs) -
   Provides access to common user directories.
 
+Testing
+-------
+
+Tests can be run with `go test`.
+
+The tests for the [xdg/trash](trash) package expect the trash to exist
+(`$XDG_DATA_HOME/Trash/files` (or `$HOME/.local/share/Trash/files` if
+`$XDG_DATA_HOME` is undefined)).
+
+The tests for the [xdg/userdirs](userdirs) package require the
+`xdg-user-dir` command.
+
 TODO
 ----
 
 - autostart
+- desktop.Launch (in progress on desktop-launch branch)
