@@ -59,7 +59,7 @@ type UserDirs struct {
 	Videos      string
 }
 
-// New creates a new UserDirs struct buy reading from the given
+// New creates a new UserDirs struct by reading from the given
 // io.Reader.
 func New(r io.Reader) (*UserDirs, error) {
 	kf, err := keyfile.New(r)
