@@ -15,7 +15,7 @@ func (kf *KeyFile) LocaleString(g, k string) (string, error) {
 func (kf *KeyFile) LocaleStringWithLocale(g, k string, l *Locale) (string, error) {
 	for _, locale := range l.Variants() {
 		key := fmt.Sprintf("%v[%v]", k, locale)
-		if kf.ValueExists(g, key) {
+		if kf.KeyExists(g, key) {
 			return kf.String(g, key)
 		}
 	}
@@ -33,7 +33,7 @@ func (kf *KeyFile) LocaleStringList(g, k string) ([]string, error) {
 func (kf *KeyFile) LocaleStringListWithLocale(g, k string, l *Locale) ([]string, error) {
 	for _, locale := range l.Variants() {
 		key := fmt.Sprintf("%v[%v]", k, locale)
-		if kf.ValueExists(g, key) {
+		if kf.KeyExists(g, key) {
 			return kf.StringList(g, key)
 		}
 	}

@@ -6,7 +6,6 @@ import (
 )
 
 const testNumber = `
-# This tests that the formatting functions work.
 [Header 1]
 zero=0
 one=1

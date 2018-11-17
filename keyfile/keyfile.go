@@ -59,6 +59,13 @@ func (kf *KeyFile) Groups() []string {
 	return groups
 }
 
+// GroupExists returns a bool indicating whether the given group 'g'
+// exists.
+func (kf *KeyFile) GroupExists(g string) bool {
+	_, exists := kf.m[g]
+	return exists
+}
+
 // Keys returns a slice of keys that exist for the given group 'g'.
 func (kf *KeyFile) Keys(g string) []string {
 	keys := make([]string, 0)
@@ -68,19 +75,24 @@ func (kf *KeyFile) Keys(g string) []string {
 	return keys
 }
 
-// ValueExists returns a bool indicating whether the given group 'g' and
-// key 'k' have a value.
-func (kf *KeyFile) ValueExists(g, k string) bool {
+// KeyExists returns a bool indicating whether the given group 'g' and
+// key 'k' exists.
+func (kf *KeyFile) KeyExists(g, k string) bool {
 	_, exists := kf.m[g][k]
 	return exists
 }
 
-// Value returns the raw string for group 'g' and key 'k'.
+// Value returns the raw string for group 'g' and key 'k'. Value will
+// return a blank string if the key doesn't exist; use ValueExists to if
+// you need to treat a missing value differently then a blank value.
 func (kf *KeyFile) Value(g, k string) string {
 	return kf.m[g][k]
 }
 
 // ValueList returns a slice of raw strings for group 'g' and key 'k'.
+// ValueList will return an empty slice if the key doesn't exist; use
+// ValueExists to if you need to treat a missing value differently then
+// a blank value.
 func (kf *KeyFile) ValueList(g, k string) ([]string, error) {
 	var buf bytes.Buffer
 	var isEscaped bool

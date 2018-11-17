@@ -141,7 +141,7 @@ func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
 	e := new(Entry)
 
 	e.Type = ParseType(kf.Value(groupDesktopEntry, keyType))
-	if kf.ValueExists(groupDesktopEntry, keyVersion) {
+	if kf.KeyExists(groupDesktopEntry, keyVersion) {
 		e.Version, err = kf.String(groupDesktopEntry, keyVersion)
 		if err != nil {
 			return nil, err
@@ -151,115 +151,115 @@ func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
 	if err != nil {
 		return nil, err
 	}
-	if kf.ValueExists(groupDesktopEntry, keyGenericName) {
+	if kf.KeyExists(groupDesktopEntry, keyGenericName) {
 		e.GenericName, err = kf.LocaleStringWithLocale(groupDesktopEntry, keyGenericName, l)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyNoDisplay) {
+	if kf.KeyExists(groupDesktopEntry, keyNoDisplay) {
 		e.NoDisplay, err = kf.Bool(groupDesktopEntry, keyNoDisplay)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyComment) {
+	if kf.KeyExists(groupDesktopEntry, keyComment) {
 		e.Comment, err = kf.LocaleStringWithLocale(groupDesktopEntry, keyComment, l)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyIcon) {
+	if kf.KeyExists(groupDesktopEntry, keyIcon) {
 		e.Icon, err = kf.LocaleStringWithLocale(groupDesktopEntry, keyIcon, l)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyHidden) {
+	if kf.KeyExists(groupDesktopEntry, keyHidden) {
 		e.Hidden, err = kf.Bool(groupDesktopEntry, keyHidden)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyOnlyShowIn) {
+	if kf.KeyExists(groupDesktopEntry, keyOnlyShowIn) {
 		e.OnlyShowIn, err = kf.StringList(groupDesktopEntry, keyOnlyShowIn)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyNotShowIn) {
+	if kf.KeyExists(groupDesktopEntry, keyNotShowIn) {
 		e.NotShowIn, err = kf.StringList(groupDesktopEntry, keyNotShowIn)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyDBusActivatable) {
+	if kf.KeyExists(groupDesktopEntry, keyDBusActivatable) {
 		e.DBusActivatable, err = kf.Bool(groupDesktopEntry, keyDBusActivatable)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyTryExec) {
+	if kf.KeyExists(groupDesktopEntry, keyTryExec) {
 		e.TryExec, err = kf.String(groupDesktopEntry, keyTryExec)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyExec) {
+	if kf.KeyExists(groupDesktopEntry, keyExec) {
 		e.Exec, err = kf.String(groupDesktopEntry, keyExec)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyPath) {
+	if kf.KeyExists(groupDesktopEntry, keyPath) {
 		e.Path, err = kf.String(groupDesktopEntry, keyPath)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyTerminal) {
+	if kf.KeyExists(groupDesktopEntry, keyTerminal) {
 		e.Terminal, err = kf.Bool(groupDesktopEntry, keyTerminal)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyActions) {
+	if kf.KeyExists(groupDesktopEntry, keyActions) {
 		e.Actions, err = getActions(kf)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyMimeType) {
+	if kf.KeyExists(groupDesktopEntry, keyMimeType) {
 		e.MimeType, err = kf.StringList(groupDesktopEntry, keyMimeType)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyCategories) {
+	if kf.KeyExists(groupDesktopEntry, keyCategories) {
 		e.Categories, err = kf.StringList(groupDesktopEntry, keyCategories)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyImplements) {
+	if kf.KeyExists(groupDesktopEntry, keyImplements) {
 		e.Implements, err = kf.StringList(groupDesktopEntry, keyImplements)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyKeywords) {
+	if kf.KeyExists(groupDesktopEntry, keyKeywords) {
 		e.Keywords, err = kf.LocaleStringListWithLocale(groupDesktopEntry, keyKeywords, l)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyStartupNotify) {
+	if kf.KeyExists(groupDesktopEntry, keyStartupNotify) {
 		e.StartupNotify, err = kf.Bool(groupDesktopEntry, keyStartupNotify)
 		if err != nil {
 			return nil, err
 		}
 	}
-	if kf.ValueExists(groupDesktopEntry, keyStartupWMClass) {
+	if kf.KeyExists(groupDesktopEntry, keyStartupWMClass) {
 		e.StartupWMClass, err = kf.String(groupDesktopEntry, keyStartupWMClass)
 		if err != nil {
 			return nil, err

@@ -6,7 +6,6 @@ import (
 )
 
 const testBool = `
-# This tests that the formatting functions work.
 [Header 1]
 yes=true
 no=false
