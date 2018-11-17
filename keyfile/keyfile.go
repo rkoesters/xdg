@@ -75,12 +75,17 @@ func (kf *KeyFile) ValueExists(g, k string) bool {
 	return exists
 }
 
-// Value returns the raw string for group 'g' and key 'k'.
+// Value returns the raw string for group 'g' and key 'k'. Value will
+// return a blank string if the key doesn't exist; use ValueExists to if
+// you need to treat a missing value differently then a blank value.
 func (kf *KeyFile) Value(g, k string) string {
 	return kf.m[g][k]
 }
 
 // ValueList returns a slice of raw strings for group 'g' and key 'k'.
+// ValueList will return an empty slice if the key doesn't exist; use
+// ValueExists to if you need to treat a missing value differently then
+// a blank value.
 func (kf *KeyFile) ValueList(g, k string) ([]string, error) {
 	var buf bytes.Buffer
 	var isEscaped bool
