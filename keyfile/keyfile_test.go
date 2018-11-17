@@ -98,3 +98,34 @@ func TestList(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestExists(t *testing.T) {
+	kf, err := New(strings.NewReader(""))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if !kf.GroupExists("") {
+		t.Fail()
+	}
+
+	if kf.GroupExists("group") {
+		t.Fail()
+	}
+
+	if kf.KeyExists("", "") {
+		t.Fail()
+	}
+
+	if kf.KeyExists("group", "") {
+		t.Fail()
+	}
+
+	if kf.KeyExists("", "key") {
+		t.Fail()
+	}
+
+	if kf.KeyExists("group", "key") {
+		t.Fail()
+	}
+}
