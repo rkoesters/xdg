@@ -3,6 +3,7 @@ package desktop
 import (
 	"bytes"
 	"errors"
+	"os"
 	"os/exec"
 	"unicode"
 )
@@ -21,6 +22,9 @@ func (de *Entry) Launch(uris ...string) error {
 		cmd := exec.Command(argv[0], argv[1:]...)
 
 		cmd.Dir = de.Path
+
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
 
 		// Alternative: Use Start and Wait with a callback
 		// (maybe have separate LaunchAsync method?)
