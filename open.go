@@ -19,18 +19,19 @@ var (
 func Open(uri string) error {
 	c := exec.Command("xdg-open", uri)
 	err := c.Run()
-	if err == nil {
-		return nil
+	if err != nil {
+		switch err.Error() {
+		case "exit status 1":
+			return ErrSyntax
+		case "exit status 2":
+			return ErrFileNotFound
+		case "exit status 3":
+			return ErrToolNotFound
+		case "exit status 4":
+			return ErrFailed
+		default:
+			return err
+		}
 	}
-	switch err.Error() {
-	case "exit status 1":
-		return ErrSyntax
-	case "exit status 2":
-		return ErrFileNotFound
-	case "exit status 3":
-		return ErrToolNotFound
-	case "exit status 4":
-		return ErrFailed
-	}
-	return err
+	return nil
 }
