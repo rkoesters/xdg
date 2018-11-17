@@ -99,14 +99,18 @@ func (de *Entry) expandExec(args ...string) ([][]string, error) {
 					// TODO copy remote uris to
 					// local machine.
 					singleIteration = false
-					ret[i] = append(ret[i], args[i])
+					if len(args) > i {
+						ret[i] = append(ret[i], args[i])
+					}
 				case 'F':
 					// TODO copy remote uris to
 					// local machine.
 					ret[i] = append(ret[i], args...)
 				case 'u':
 					singleIteration = false
-					ret[i] = append(ret[i], args[i])
+					if len(args) > i {
+						ret[i] = append(ret[i], args[i])
+					}
 				case 'U':
 					ret[i] = append(ret[i], args...)
 				case 'd':
