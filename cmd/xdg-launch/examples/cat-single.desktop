@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Cat
+Name=Cat (Single Argument)
 Icon=format-justify-left
-Exec=cat %F
+Exec=cat %f

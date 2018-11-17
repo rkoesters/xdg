@@ -1,6 +1,6 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Echo
+Name=Echo (Multiple Arguments)
 Icon=dialog-information
-Exec=echo %k: %c %i %f %%
+Exec=echo %k: %c %i %F %%
