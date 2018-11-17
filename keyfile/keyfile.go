@@ -12,8 +12,9 @@ import (
 	"strings"
 )
 
-// KeyFile is a map of a map of strings. The first string is the header
-// section and the second is the key.
+// KeyFile is an implementation of the keyfile format used by several
+// FreeDesktop.org (xdg) specs. The key values without a header section
+// can be accessed using an empty string as the group.
 type KeyFile struct {
 	m map[string]map[string]string
 }
