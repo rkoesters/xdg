@@ -59,6 +59,13 @@ func (kf *KeyFile) Groups() []string {
 	return groups
 }
 
+// GroupExists returns a bool indicating whether the given group 'g'
+// exists.
+func (kf *KeyFile) GroupExists(g string) bool {
+	_, exists := kf.m[g]
+	return exists
+}
+
 // Keys returns a slice of keys that exist for the given group 'g'.
 func (kf *KeyFile) Keys(g string) []string {
 	keys := make([]string, 0)
@@ -68,9 +75,9 @@ func (kf *KeyFile) Keys(g string) []string {
 	return keys
 }
 
-// ValueExists returns a bool indicating whether the given group 'g' and
-// key 'k' have a value.
-func (kf *KeyFile) ValueExists(g, k string) bool {
+// KeyExists returns a bool indicating whether the given group 'g' and
+// key 'k' exists.
+func (kf *KeyFile) KeyExists(g, k string) bool {
 	_, exists := kf.m[g][k]
 	return exists
 }

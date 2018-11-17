@@ -39,9 +39,13 @@ func TestParser(t *testing.T) {
 
 	// Groups() and Keys() should always lead to valid values.
 	for _, group := range kf.Groups() {
+		if !kf.GroupExists(group) {
+			t.Errorf("GroupExists == false for group='%v'", group)
+		}
+
 		for _, key := range kf.Keys(group) {
-			if !kf.ValueExists(group, key) {
-				t.Errorf("ValueExists == false for group='%v' key='%v'", group, key)
+			if !kf.KeyExists(group, key) {
+				t.Errorf("KeyExists == false for group='%v' key='%v'", group, key)
 			}
 		}
 	}
