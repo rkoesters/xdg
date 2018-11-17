@@ -48,7 +48,7 @@ func (de *Entry) expandExec(args ...string) ([][]string, error) {
 	// singleIteration defaults to true, but will be set to false if
 	// we find '%f' or '%u'
 	singleIteration := true
-	for i := 0; (i == 0 && singleIteration) || i < len(args); i++ {
+	for i := 0; (singleIteration && i == 0) || (!singleIteration && i < len(args)); i++ {
 		ret = append(ret, make([]string, 0))
 
 		if de.Terminal {
