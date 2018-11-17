@@ -3,4 +3,4 @@ Version=1.0
 Type=Application
 Name=Echo (Multiple Arguments)
 Icon=dialog-information
-Exec=echo %k: %c %i %F %%
+Exec=echo %k: %c %i %U %%
