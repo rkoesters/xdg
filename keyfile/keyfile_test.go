@@ -11,7 +11,7 @@ const testParser = `
 [Header 1]
 key=value
 	# This line is used to test extraneous white space.
-	cat = dog 
+	cat = dog
 [Header 2]
 # This line tests for extra equal signs.
 man = bear = pig
@@ -24,16 +24,16 @@ func TestParser(t *testing.T) {
 	}
 	t.Log(kf)
 
-	s, err := kf.String("Header 1", "key")
-	if s != "value" || err != nil {
+	s := kf.Value("Header 1", "key")
+	if s != "value" {
 		t.Error("basic usage")
 	}
-	s, err = kf.String("Header 1", "cat")
-	if s != "dog" || err != nil {
+	s = kf.Value("Header 1", "cat")
+	if s != "dog" {
 		t.Error("whitespace")
 	}
-	s, err = kf.String("Header 2", "man")
-	if s != "bear = pig" || err != nil {
+	s = kf.Value("Header 2", "man")
+	if s != "bear = pig" {
 		t.Error("equal signs")
 	}
 
