@@ -56,7 +56,7 @@ const (
 type Entry struct {
 	// filename is the original filename of the desktop entry. This
 	// is only set when created with NewFromFile or
-	// NewFromFileWithLocale. Use for '%k' in Exec key.
+	// NewFromFileWithLocale. Used for '%k' in Exec key.
 	filename string
 
 	// The type of desktop entry. It can be: Application, Link, or
