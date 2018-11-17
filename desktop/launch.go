@@ -23,6 +23,9 @@ func (de *Entry) Launch(uris ...string) error {
 
 		cmd.Dir = de.Path
 
+		// TODO should these be left as is, removed, or made
+		// TODO configurable?
+		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 
