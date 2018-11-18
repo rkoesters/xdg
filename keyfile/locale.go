@@ -121,7 +121,11 @@ func (l *Locale) String() string {
 func (l *Locale) Variants() []*Locale {
 	variants := make([]*Locale, 0)
 
-	if l.lang != "" && l.country != "" && l.modifier != "" {
+	hasLang := l.lang != ""
+	hasCountry := l.country != ""
+	hasModifier := l.modifier != ""
+
+	if hasLang && hasCountry && hasModifier {
 		variants = append(variants, &Locale{
 			lang:     l.lang,
 			country:  l.country,
@@ -129,21 +133,21 @@ func (l *Locale) Variants() []*Locale {
 		})
 	}
 
-	if l.lang != "" && l.country != "" {
+	if hasLang && hasCountry {
 		variants = append(variants, &Locale{
 			lang:    l.lang,
 			country: l.country,
 		})
 	}
 
-	if l.lang != "" && l.modifier != "" {
+	if hasLang && hasModifier {
 		variants = append(variants, &Locale{
 			lang:     l.lang,
 			modifier: l.modifier,
 		})
 	}
 
-	if l.lang != "" {
+	if hasLang {
 		variants = append(variants, &Locale{
 			lang: l.lang,
 		})

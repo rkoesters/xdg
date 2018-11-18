@@ -60,6 +60,31 @@ func TestLocaleString(t *testing.T) {
 	if s != "Value 2" {
 		t.Errorf("expected=Value 2 real=%v", s)
 	}
+
+	locale, err = ParseLocale("en_US.UTF-8@MOD")
+	if err != nil {
+		t.Error(err)
+	}
+	s, err = kf.LocaleStringWithLocale("Header 1", "Key", locale)
+	if err != nil {
+		t.Error(err)
+	}
+	if s != "Value 1" {
+		t.Errorf("expected=Value 1 real=%v", s)
+	}
+
+	locale, err = ParseLocale("en_UK.UTF-8@MOD")
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(locale)
+	s, err = kf.LocaleStringWithLocale("Header 1", "Key", locale)
+	if err != nil {
+		t.Error(err)
+	}
+	if s != "Value 2" {
+		t.Errorf("expected=Value 2 real=%v", s)
+	}
 }
 
 func TestLocaleStringList(t *testing.T) {
