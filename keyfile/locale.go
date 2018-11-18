@@ -55,6 +55,7 @@ func ParseLocale(s string) (*Locale, error) {
 	}
 	l.lang = buf.String()
 	buf.Reset()
+
 	if i < len(s) && s[i] == '_' {
 		i++
 		for i < len(s) && s[i] != '.' && s[i] != '@' {
@@ -64,6 +65,7 @@ func ParseLocale(s string) (*Locale, error) {
 		l.country = buf.String()
 		buf.Reset()
 	}
+
 	if i < len(s) && s[i] == '.' {
 		i++
 		for i < len(s) && s[i] != '@' {
@@ -73,6 +75,7 @@ func ParseLocale(s string) (*Locale, error) {
 		l.encoding = buf.String()
 		buf.Reset()
 	}
+
 	if i < len(s) && s[i] == '@' {
 		i++
 		for i < len(s) {
@@ -98,21 +101,24 @@ func (l *Locale) clone() *Locale {
 // string is in the same format expected by ParseLocale.
 func (l *Locale) String() string {
 	var buf bytes.Buffer
-	if l.lang != "" {
-		buf.WriteString(l.lang)
-	}
+
+	buf.WriteString(l.lang)
+
 	if l.country != "" {
 		buf.WriteRune('_')
 		buf.WriteString(l.country)
 	}
+
 	if l.encoding != "" {
 		buf.WriteRune('.')
 		buf.WriteString(l.encoding)
 	}
+
 	if l.modifier != "" {
 		buf.WriteRune('@')
 		buf.WriteString(l.modifier)
 	}
+
 	return buf.String()
 }
 
