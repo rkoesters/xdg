@@ -88,15 +88,6 @@ func ParseLocale(s string) (*Locale, error) {
 	return l, nil
 }
 
-func (l *Locale) clone() *Locale {
-	return &Locale{
-		lang:     l.lang,
-		country:  l.country,
-		encoding: l.encoding,
-		modifier: l.modifier,
-	}
-}
-
 // String returns the given locale as a formatted string. The returned
 // string is in the same format expected by ParseLocale.
 func (l *Locale) String() string {
