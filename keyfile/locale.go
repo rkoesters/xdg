@@ -2,7 +2,6 @@ package keyfile
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 )
 
@@ -49,6 +48,7 @@ func ParseLocale(s string) (*Locale, error) {
 	i := 0
 	l := new(Locale)
 
+	// lang
 	for i < len(s) && s[i] != '_' && s[i] != '.' && s[i] != '@' {
 		buf.WriteByte(s[i])
 		i++
@@ -56,6 +56,7 @@ func ParseLocale(s string) (*Locale, error) {
 	l.lang = buf.String()
 	buf.Reset()
 
+	// COUNTRY
 	if i < len(s) && s[i] == '_' {
 		i++
 		for i < len(s) && s[i] != '.' && s[i] != '@' {
@@ -66,6 +67,7 @@ func ParseLocale(s string) (*Locale, error) {
 		buf.Reset()
 	}
 
+	// ENCODING
 	if i < len(s) && s[i] == '.' {
 		i++
 		for i < len(s) && s[i] != '@' {
@@ -76,6 +78,7 @@ func ParseLocale(s string) (*Locale, error) {
 		buf.Reset()
 	}
 
+	// MODIFIER
 	if i < len(s) && s[i] == '@' {
 		i++
 		for i < len(s) {
@@ -86,15 +89,6 @@ func ParseLocale(s string) (*Locale, error) {
 	}
 
 	return l, nil
-}
-
-func (l *Locale) clone() *Locale {
-	return &Locale{
-		lang:     l.lang,
-		country:  l.country,
-		encoding: l.encoding,
-		modifier: l.modifier,
-	}
 }
 
 // String returns the given locale as a formatted string. The returned
@@ -122,22 +116,38 @@ func (l *Locale) String() string {
 	return buf.String()
 }
 
-// Variants returns a sorted slice of locale variation strings that
-// should be checked for when resolving a localestring.
-func (l *Locale) Variants() []string {
-	variants := []string{}
+// Variants returns a sorted slice of *Locales that should be checked
+// for when resolving a localestring.
+func (l *Locale) Variants() []*Locale {
+	variants := make([]*Locale, 0)
 
 	if l.lang != "" && l.country != "" && l.modifier != "" {
-		variants = append(variants, fmt.Sprintf("%v_%v@%v", l.lang, l.country, l.modifier))
+		variants = append(variants, &Locale{
+			lang:     l.lang,
+			country:  l.country,
+			modifier: l.modifier,
+		})
 	}
+
 	if l.lang != "" && l.country != "" {
-		variants = append(variants, fmt.Sprintf("%v_%v", l.lang, l.country))
+		variants = append(variants, &Locale{
+			lang:    l.lang,
+			country: l.country,
+		})
 	}
+
 	if l.lang != "" && l.modifier != "" {
-		variants = append(variants, fmt.Sprintf("%v@%v", l.lang, l.modifier))
+		variants = append(variants, &Locale{
+			lang:     l.lang,
+			modifier: l.modifier,
+		})
 	}
+
 	if l.lang != "" {
-		variants = append(variants, l.lang)
+		variants = append(variants, &Locale{
+			lang: l.lang,
+		})
 	}
+
 	return variants
 }

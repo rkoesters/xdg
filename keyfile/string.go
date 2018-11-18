@@ -5,11 +5,17 @@ import (
 )
 
 // String returns the value for group 'g' and key 'k' as a string.
+// String will return a blank string if the key doesn't exist; use
+// GroupExists or KeyExists to if you need to treat a missing value
+// differently then a blank value.
 func (kf *KeyFile) String(g, k string) (string, error) {
 	return unescapeString(kf.Value(g, k))
 }
 
 // StringList returns a slice of strings for group 'g' and key 'k'.
+// StringList will return an empty slice if the key doesn't exist; use
+// GroupExists or KeyExists to if you need to treat a missing value
+// differently then a blank value.
 func (kf *KeyFile) StringList(g, k string) ([]string, error) {
 	vlist, err := kf.ValueList(g, k)
 	if err != nil {
