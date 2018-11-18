@@ -2,7 +2,6 @@ package keyfile
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 )
 
@@ -115,20 +114,36 @@ func (l *Locale) String() string {
 
 // Variants returns a sorted slice of locale variation strings that
 // should be checked for when resolving a localestring.
-func (l *Locale) Variants() []string {
-	variants := []string{}
+func (l *Locale) Variants() []*Locale {
+	variants := make([]*Locale, 0)
 
 	if l.lang != "" && l.country != "" && l.modifier != "" {
-		variants = append(variants, fmt.Sprintf("%v_%v@%v", l.lang, l.country, l.modifier))
+		variants = append(variants, &Locale{
+			lang:     l.lang,
+			country:  l.country,
+			modifier: l.modifier,
+		})
 	}
+
 	if l.lang != "" && l.country != "" {
-		variants = append(variants, fmt.Sprintf("%v_%v", l.lang, l.country))
+		variants = append(variants, &Locale{
+			lang:    l.lang,
+			country: l.country,
+		})
 	}
+
 	if l.lang != "" && l.modifier != "" {
-		variants = append(variants, fmt.Sprintf("%v@%v", l.lang, l.modifier))
+		variants = append(variants, &Locale{
+			lang:     l.lang,
+			modifier: l.modifier,
+		})
 	}
+
 	if l.lang != "" {
-		variants = append(variants, l.lang)
+		variants = append(variants, &Locale{
+			lang: l.lang,
+		})
 	}
+
 	return variants
 }
