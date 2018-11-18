@@ -48,6 +48,7 @@ func ParseLocale(s string) (*Locale, error) {
 	i := 0
 	l := new(Locale)
 
+	// lang
 	for i < len(s) && s[i] != '_' && s[i] != '.' && s[i] != '@' {
 		buf.WriteByte(s[i])
 		i++
@@ -55,6 +56,7 @@ func ParseLocale(s string) (*Locale, error) {
 	l.lang = buf.String()
 	buf.Reset()
 
+	// COUNTRY
 	if i < len(s) && s[i] == '_' {
 		i++
 		for i < len(s) && s[i] != '.' && s[i] != '@' {
@@ -65,6 +67,7 @@ func ParseLocale(s string) (*Locale, error) {
 		buf.Reset()
 	}
 
+	// ENCODING
 	if i < len(s) && s[i] == '.' {
 		i++
 		for i < len(s) && s[i] != '@' {
@@ -75,6 +78,7 @@ func ParseLocale(s string) (*Locale, error) {
 		buf.Reset()
 	}
 
+	// MODIFIER
 	if i < len(s) && s[i] == '@' {
 		i++
 		for i < len(s) {
@@ -112,8 +116,8 @@ func (l *Locale) String() string {
 	return buf.String()
 }
 
-// Variants returns a sorted slice of locale variation strings that
-// should be checked for when resolving a localestring.
+// Variants returns a sorted slice of *Locales that should be checked
+// for when resolving a localestring.
 func (l *Locale) Variants() []*Locale {
 	variants := make([]*Locale, 0)
 
