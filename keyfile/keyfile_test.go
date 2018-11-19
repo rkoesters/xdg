@@ -129,3 +129,18 @@ func TestExists(t *testing.T) {
 		t.Fail()
 	}
 }
+
+const testListUnexpectedEndOfString = `
+list=asdf;asdf;\`
+
+func TestListUnexpectedEndOfString(t *testing.T) {
+	kf, err := New(strings.NewReader(testListUnexpectedEndOfString))
+	if err != nil {
+		t.FailNow()
+	}
+
+	_, err = kf.ValueList("", "list")
+	if err != ErrUnexpectedEndOfString {
+		t.Fail()
+	}
+}
