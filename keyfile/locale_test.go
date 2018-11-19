@@ -16,7 +16,7 @@ func TestParseLocale(t *testing.T) {
 		t.Error(err)
 	}
 	if localeStr != locale.String() {
-		t.Errorf("'%v' != '%v'", localeStr, locale.String())
+		t.Errorf("'%v' != '%v'", localeStr, locale)
 	}
 
 	localeStr = "en_US.UTF-8@mod"
@@ -25,7 +25,7 @@ func TestParseLocale(t *testing.T) {
 		t.Error(err)
 	}
 	if localeStr != locale.String() {
-		t.Errorf("'%v' != '%v'", localeStr, locale.String())
+		t.Errorf("'%v' != '%v'", localeStr, locale)
 	}
 
 	localeStr = "en_US@mod"
@@ -34,7 +34,7 @@ func TestParseLocale(t *testing.T) {
 		t.Error(err)
 	}
 	if localeStr != locale.String() {
-		t.Errorf("'%v' != '%v'", localeStr, locale.String())
+		t.Errorf("'%v' != '%v'", localeStr, locale)
 	}
 
 	localeStr = "en_US"
@@ -43,7 +43,7 @@ func TestParseLocale(t *testing.T) {
 		t.Error(err)
 	}
 	if localeStr != locale.String() {
-		t.Errorf("'%v' != '%v'", localeStr, locale.String())
+		t.Errorf("'%v' != '%v'", localeStr, locale)
 	}
 
 	localeStr = "en@mod"
@@ -52,7 +52,7 @@ func TestParseLocale(t *testing.T) {
 		t.Error(err)
 	}
 	if localeStr != locale.String() {
-		t.Errorf("'%v' != '%v'", localeStr, locale.String())
+		t.Errorf("'%v' != '%v'", localeStr, locale)
 	}
 
 	localeStr = "en"
@@ -61,7 +61,7 @@ func TestParseLocale(t *testing.T) {
 		t.Error(err)
 	}
 	if localeStr != locale.String() {
-		t.Errorf("'%v' != '%v'", localeStr, locale.String())
+		t.Errorf("'%v' != '%v'", localeStr, locale)
 	}
 }
 
