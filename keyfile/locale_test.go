@@ -1,6 +1,7 @@
 package keyfile
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -70,4 +71,21 @@ func TestDefaultLocale(t *testing.T) {
 		t.FailNow()
 	}
 	t.Log(locale.String())
+}
+
+func TestSpecialLocale(t *testing.T) {
+	blank, err := ParseLocale("")
+	if err != nil {
+		t.Fail()
+	}
+
+	c, err := ParseLocale("C")
+	if err != nil || !reflect.DeepEqual(c, blank) {
+		t.Fail()
+	}
+
+	posix, err := ParseLocale("POSIX")
+	if err != nil || !reflect.DeepEqual(posix, blank) {
+		t.Fail()
+	}
 }
