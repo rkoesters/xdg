@@ -73,6 +73,23 @@ func TestDefaultLocale(t *testing.T) {
 	t.Log(locale.String())
 }
 
+func TestBadLocale(t *testing.T) {
+	_, err := ParseLocale("_US")
+	if err != ErrBadLocaleFormat {
+		t.Fail()
+	}
+
+	_, err = ParseLocale(".UTF-8")
+	if err != ErrBadLocaleFormat {
+		t.Fail()
+	}
+
+	_, err = ParseLocale("@Latn")
+	if err != ErrBadLocaleFormat {
+		t.Fail()
+	}
+}
+
 func TestSpecialLocale(t *testing.T) {
 	blank, err := ParseLocale("")
 	if err != nil {
