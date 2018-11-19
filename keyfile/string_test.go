@@ -1,6 +1,7 @@
 package keyfile
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -32,6 +33,32 @@ func TestUnescapeString(t *testing.T) {
 		_, err := unescapeString(input)
 		if err != expected {
 			t.Error(err)
+		}
+	}
+}
+
+func TestBadStringList(t *testing.T) {
+	const badList = `list=asdf;asdf\`
+
+	kf, err := New(strings.NewReader(badList))
+	if err != nil {
+		t.Fail()
+	} else {
+		_, err = kf.StringList("", "list")
+		if err != ErrUnexpectedEndOfString {
+			t.Fail()
+		}
+	}
+
+	const badStringInList = `list=asdf;as\qasd;`
+
+	kf, err = New(strings.NewReader(badStringInList))
+	if err != nil {
+		t.Fail()
+	} else {
+		_, err = kf.StringList("", "list")
+		if err != ErrBadEscapeSequence {
+			t.Fail()
 		}
 	}
 }

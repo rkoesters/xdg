@@ -104,6 +104,7 @@ Terminal=true
 Actions=NewFile;TacoSalad;
 MimeType=text/plain;text/markdown;
 Categories=Tests;Golang;
+Implements=Interface;
 Keywords=full;test;golang;xdg;desktop;
 
 StartupNotify=true
