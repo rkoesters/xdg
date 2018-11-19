@@ -2,6 +2,7 @@ package keyfile
 
 import (
 	"bytes"
+	"errors"
 	"os"
 )
 
@@ -37,12 +38,24 @@ func DefaultLocale() *Locale {
 	return defaultLocale
 }
 
-// ParseLocale parses a locale in the format:
+// ErrBadLocaleFormat is returned by ParseLocale when the given string
+// is not formatted properly (for example, missing the lang component).
+var ErrBadLocaleFormat = errors.New("bad locale format")
+
+// ParseLocale parses a locale in the format
 //
 // 	lang_COUNTRY.ENCODING@MODIFIER
 //
-// and returns a Locale struct.
+// where "_COUNTRY", ".ENCODING", and "@MODIFIER" can be omitted. A
+// blank string, "C", and "POSIX" are special cases that evaluate to a
+// blank Locale.
 func ParseLocale(s string) (*Locale, error) {
+	// A blank string, "C", and "POSIX" are valid locales, they
+	// evaluate to a blank Locale.
+	if s == "" || s == "C" || s == "POSIX" {
+		return &Locale{}, nil
+	}
+
 	var buf bytes.Buffer
 
 	i := 0
@@ -55,6 +68,11 @@ func ParseLocale(s string) (*Locale, error) {
 	}
 	l.lang = buf.String()
 	buf.Reset()
+
+	// lang is required.
+	if l.lang == "" {
+		return nil, ErrBadLocaleFormat
+	}
 
 	// COUNTRY
 	if i < len(s) && s[i] == '_' {
