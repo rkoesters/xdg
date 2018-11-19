@@ -67,10 +67,10 @@ func TestParseLocale(t *testing.T) {
 
 func TestDefaultLocale(t *testing.T) {
 	locale := DefaultLocale()
+	t.Log(locale)
 	if locale == nil {
-		t.FailNow()
+		t.Fail()
 	}
-	t.Log(locale.String())
 }
 
 func TestBadLocale(t *testing.T) {
