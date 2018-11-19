@@ -70,6 +70,7 @@ const testList = `
 [Header 1]
 list=man;bear;pig;
 list2=man\;bear;pig\r;
+list3=man;bear;pig
 `
 
 func TestList(t *testing.T) {
@@ -77,6 +78,7 @@ func TestList(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+
 	expect := []string{"man", "bear", "pig"}
 	actual, err := kf.ValueList("Header 1", "list")
 	if err != nil {
@@ -87,8 +89,23 @@ func TestList(t *testing.T) {
 	if !reflect.DeepEqual(actual, expect) {
 		t.Fail()
 	}
+
 	expect = []string{"man;bear", "pig\\r"}
 	actual, err = kf.ValueList("Header 1", "list2")
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(expect)
+	t.Log(actual)
+	if !reflect.DeepEqual(actual, expect) {
+		t.Fail()
+	}
+
+	// We currently support lists not ending in ';'. If that
+	// behavior changes the following will need to be updated
+	// accordingly.
+	expect = []string{"man", "bear", "pig"}
+	actual, err = kf.ValueList("Header 1", "list3")
 	if err != nil {
 		t.Error(err)
 	}
