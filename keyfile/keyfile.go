@@ -34,7 +34,7 @@ func New(r io.Reader) (*KeyFile, error) {
 			// Empty line.
 		case strings.HasPrefix(line, "#"):
 			// Comment.
-		case line[0:1] == "[" && line[len(line)-1:] == "]":
+		case line[0] == '[' && line[len(line)-1] == ']':
 			// Group header.
 			hdr = line[1 : len(line)-1]
 			kf.m[hdr] = make(map[string]string)
