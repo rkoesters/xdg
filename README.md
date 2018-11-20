@@ -39,6 +39,9 @@ TODO
 
 - autostart
 - desktop.Launch (in progress on desktop-launch branch)
+- trash.New (requires checking for a "sticky bit" on the filesystem of
+  the drive on which the trash exists; in addition to other (easier)
+  checks)
 
 License
 -------
