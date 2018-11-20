@@ -137,7 +137,7 @@ func (l *Locale) String() string {
 // Variants returns a sorted slice of *Locales that should be checked
 // for when resolving a localestring.
 func (l *Locale) Variants() []*Locale {
-	variants := make([]*Locale, 0)
+	variants := make([]*Locale, 0, 4)
 
 	hasLang := l.lang != ""
 	hasCountry := l.country != ""
