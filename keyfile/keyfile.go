@@ -34,7 +34,7 @@ func New(r io.Reader) (*KeyFile, error) {
 			// Empty line.
 		case strings.HasPrefix(line, "#"):
 			// Comment.
-		case line[0:1] == "[" && line[len(line)-1:] == "]":
+		case line[0] == '[' && line[len(line)-1] == ']':
 			// Group header.
 			hdr = line[1 : len(line)-1]
 			kf.m[hdr] = make(map[string]string)
@@ -53,7 +53,7 @@ func New(r io.Reader) (*KeyFile, error) {
 
 // Groups returns a slice of groups that exist for the KeyFile.
 func (kf *KeyFile) Groups() []string {
-	groups := make([]string, 0)
+	groups := make([]string, 0, len(kf.m))
 	for k := range kf.m {
 		groups = append(groups, k)
 	}
@@ -69,7 +69,7 @@ func (kf *KeyFile) GroupExists(g string) bool {
 
 // Keys returns a slice of keys that exist for the given group 'g'.
 func (kf *KeyFile) Keys(g string) []string {
-	keys := make([]string, 0)
+	keys := make([]string, 0, len(kf.m[g]))
 	for k := range kf.m[g] {
 		keys = append(keys, k)
 	}
@@ -99,26 +99,16 @@ func (kf *KeyFile) ValueList(g, k string) ([]string, error) {
 	var buf bytes.Buffer
 	var isEscaped bool
 	var list []string
-	var err error
 
 	for _, r := range kf.Value(g, k) {
 		if isEscaped {
 			if r == ';' {
-				_, err = buf.WriteRune(';')
-				if err != nil {
-					return nil, err
-				}
+				buf.WriteRune(';')
 			} else {
 				// The escape sequence isn't '\;', so we
 				// want to copy it over as is.
-				_, err = buf.WriteRune('\\')
-				if err != nil {
-					return nil, err
-				}
-				_, err = buf.WriteRune(r)
-				if err != nil {
-					return nil, err
-				}
+				buf.WriteRune('\\')
+				buf.WriteRune(r)
 			}
 			isEscaped = false
 		} else {
