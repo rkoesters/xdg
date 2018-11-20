@@ -99,26 +99,16 @@ func (kf *KeyFile) ValueList(g, k string) ([]string, error) {
 	var buf bytes.Buffer
 	var isEscaped bool
 	var list []string
-	var err error
 
 	for _, r := range kf.Value(g, k) {
 		if isEscaped {
 			if r == ';' {
-				_, err = buf.WriteRune(';')
-				if err != nil {
-					return nil, err
-				}
+				buf.WriteRune(';')
 			} else {
 				// The escape sequence isn't '\;', so we
 				// want to copy it over as is.
-				_, err = buf.WriteRune('\\')
-				if err != nil {
-					return nil, err
-				}
-				_, err = buf.WriteRune(r)
-				if err != nil {
-					return nil, err
-				}
+				buf.WriteRune('\\')
+				buf.WriteRune(r)
 			}
 			isEscaped = false
 		} else {
