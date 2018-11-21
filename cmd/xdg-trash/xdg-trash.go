@@ -10,21 +10,23 @@ import (
 )
 
 const (
-	countName = "count"
-	emptyName = "empty"
-	eraseName = "erase"
-	infoName  = "info"
-	lsName    = "ls"
-	rmName    = "rm"
+	countName   = "count"
+	emptyName   = "empty"
+	eraseName   = "erase"
+	infoName    = "info"
+	lsName      = "ls"
+	restoreName = "restore"
+	rmName      = "rm"
 )
 
 var (
-	countFlag = flag.NewFlagSet(countName, flag.ExitOnError)
-	emptyFlag = flag.NewFlagSet(emptyName, flag.ExitOnError)
-	eraseFlag = flag.NewFlagSet(eraseName, flag.ExitOnError)
-	infoFlag  = flag.NewFlagSet(infoName, flag.ExitOnError)
-	lsFlag    = flag.NewFlagSet(lsName, flag.ExitOnError)
-	rmFlag    = flag.NewFlagSet(rmName, flag.ExitOnError)
+	countFlag   = flag.NewFlagSet(countName, flag.ExitOnError)
+	emptyFlag   = flag.NewFlagSet(emptyName, flag.ExitOnError)
+	eraseFlag   = flag.NewFlagSet(eraseName, flag.ExitOnError)
+	infoFlag    = flag.NewFlagSet(infoName, flag.ExitOnError)
+	lsFlag      = flag.NewFlagSet(lsName, flag.ExitOnError)
+	restoreFlag = flag.NewFlagSet(restoreName, flag.ExitOnError)
+	rmFlag      = flag.NewFlagSet(rmName, flag.ExitOnError)
 )
 
 func main() {
@@ -57,6 +59,9 @@ func main() {
 	case lsName:
 		lsFlag.Parse(flag.Args()[1:])
 		lsMain()
+	case restoreName:
+		restoreFlag.Parse(flag.Args()[1:])
+		restoreMain()
 	case rmName:
 		rmFlag.Parse(flag.Args()[1:])
 		rmMain()
@@ -169,6 +174,20 @@ func lsMain() {
 
 	for _, fname := range files {
 		fmt.Println(fname)
+	}
+}
+
+func restoreMain() {
+	if restoreFlag.NArg() == 0 {
+		restoreFlag.Usage()
+		os.Exit(1)
+	}
+
+	for _, file := range restoreFlag.Args() {
+		err := trash.Restore(file)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 

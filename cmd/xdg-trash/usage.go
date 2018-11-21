@@ -13,6 +13,7 @@ func init() {
 	eraseFlag.Usage = eraseUsage
 	infoFlag.Usage = infoUsage
 	lsFlag.Usage = lsUsage
+	restoreFlag.Usage = restoreUsage
 	rmFlag.Usage = rmUsage
 }
 
@@ -33,6 +34,9 @@ func usage() {
 	fmt.Fprintln(os.Stderr)
 	fmt.Fprintln(os.Stderr, "\tls")
 	fmt.Fprintln(os.Stderr, "\t\tlist the items in the trash")
+	fmt.Fprintln(os.Stderr)
+	fmt.Fprintln(os.Stderr, "\trestore")
+	fmt.Fprintln(os.Stderr, "\t\trestore a file from the trash")
 	fmt.Fprintln(os.Stderr)
 	fmt.Fprintln(os.Stderr, "\trm")
 	fmt.Fprintln(os.Stderr, "\t\tmove a file to the trash")
@@ -68,6 +72,12 @@ func lsUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], lsName, "[FLAGS]")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
 	lsFlag.PrintDefaults()
+}
+
+func restoreUsage() {
+	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], restoreName, "[FLAGS] FILE...")
+	fmt.Fprintln(os.Stderr, "FLAGS:")
+	restoreFlag.PrintDefaults()
 }
 
 func rmUsage() {
