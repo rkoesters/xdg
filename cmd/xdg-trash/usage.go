@@ -51,9 +51,7 @@ func countUsage() {
 }
 
 func emptyUsage() {
-	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], emptyName, "[FLAGS]")
-	fmt.Fprintln(os.Stderr, "FLAGS:")
-	emptyFlag.PrintDefaults()
+	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], emptyName)
 }
 
 func eraseUsage() {
@@ -69,20 +67,14 @@ func infoUsage() {
 }
 
 func lsUsage() {
-	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], lsName, "[FLAGS]")
-	fmt.Fprintln(os.Stderr, "FLAGS:")
-	lsFlag.PrintDefaults()
+	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], lsName)
 }
 
 func restoreUsage() {
-	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], restoreName, "[FLAGS] FILE [DESTINATION]")
-	fmt.Fprintln(os.Stderr, "      ", os.Args[0], restoreName, "[FLAGS] FILE... DIRECTORY")
-	fmt.Fprintln(os.Stderr, "FLAGS:")
-	restoreFlag.PrintDefaults()
+	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], restoreName, "FILE [DESTINATION]")
+	fmt.Fprintln(os.Stderr, "      ", os.Args[0], restoreName, "FILE... DIRECTORY")
 }
 
 func rmUsage() {
-	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], rmName, "[FLAGS] PATH...")
-	fmt.Fprintln(os.Stderr, "FLAGS:")
-	rmFlag.PrintDefaults()
+	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], rmName, "PATH...")
 }
