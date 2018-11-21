@@ -9,13 +9,22 @@ import (
 	"time"
 )
 
+const (
+	countName = "count"
+	emptyName = "empty"
+	eraseName = "erase"
+	infoName  = "info"
+	lsName    = "ls"
+	trashName = "trash"
+)
+
 var (
-	countCommand = flag.NewFlagSet("count", flag.ExitOnError)
-	emptyCommand = flag.NewFlagSet("empty", flag.ExitOnError)
-	eraseCommand = flag.NewFlagSet("erase", flag.ExitOnError)
-	infoCommand  = flag.NewFlagSet("info", flag.ExitOnError)
-	lsCommand    = flag.NewFlagSet("ls", flag.ExitOnError)
-	trashCommand = flag.NewFlagSet("trash", flag.ExitOnError)
+	countCommand = flag.NewFlagSet(countName, flag.ExitOnError)
+	emptyCommand = flag.NewFlagSet(emptyName, flag.ExitOnError)
+	eraseCommand = flag.NewFlagSet(eraseName, flag.ExitOnError)
+	infoCommand  = flag.NewFlagSet(infoName, flag.ExitOnError)
+	lsCommand    = flag.NewFlagSet(lsName, flag.ExitOnError)
+	trashCommand = flag.NewFlagSet(trashName, flag.ExitOnError)
 )
 
 func main() {
@@ -33,17 +42,17 @@ func main() {
 
 	// Parse the command.
 	switch flag.Arg(0) {
-	case countCommand.Name():
+	case countName:
 		countCommand.Parse(flag.Args()[1:])
-	case emptyCommand.Name():
+	case emptyName:
 		emptyCommand.Parse(flag.Args()[1:])
-	case eraseCommand.Name():
+	case eraseName:
 		eraseCommand.Parse(flag.Args()[1:])
-	case infoCommand.Name():
+	case infoName:
 		infoCommand.Parse(flag.Args()[1:])
-	case lsCommand.Name():
+	case lsName:
 		lsCommand.Parse(flag.Args()[1:])
-	case trashCommand.Name():
+	case trashName:
 		trashCommand.Parse(flag.Args()[1:])
 	default:
 		log.Printf("unknown command '%v'\n", flag.Arg(0))
