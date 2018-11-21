@@ -1,3 +1,5 @@
+// xdg-trash is a command line interface for the trash package for the
+// purposes of debugging.
 package main
 
 import (
