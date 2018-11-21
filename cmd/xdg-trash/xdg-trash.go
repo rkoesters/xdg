@@ -120,6 +120,10 @@ func eraseMain() {
 	}
 }
 
+var (
+	infoCompact = infoCommand.Bool("1", false, "one file info per line")
+)
+
 func infoMain() {
 	if infoCommand.NArg() == 0 {
 		infoCommand.Usage()
@@ -132,9 +136,13 @@ func infoMain() {
 			log.Fatal(err)
 		}
 
-		fmt.Println("File:", file)
-		fmt.Println("Original Path:", info.Path)
-		fmt.Println("Deletion Date:", info.DeletionDate.Format(time.RFC822))
+		if *infoCompact {
+			fmt.Printf("%v:%v:%v\n", file, info.Path, info.DeletionDate.Format(time.RFC3339))
+		} else {
+			fmt.Println("File:", file)
+			fmt.Println("Original Path:", info.Path)
+			fmt.Println("Deletion Date:", info.DeletionDate.Format(time.RFC822))
+		}
 	}
 }
 
