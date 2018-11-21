@@ -101,9 +101,6 @@ func TestList(t *testing.T) {
 		t.Fail()
 	}
 
-	// We currently support lists not ending in ';'. If that
-	// behavior changes the following will need to be updated
-	// accordingly.
 	expect = []string{"man", "bear", "pig"}
 	actual, err = kf.ValueList("Header 1", "list3")
 	if err != nil {

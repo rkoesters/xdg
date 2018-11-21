@@ -9,10 +9,11 @@ import (
 	"time"
 )
 
-const tinfo = "Trash Info"
+const (
+	trashInfo = "Trash Info"
 
-// time.RFC3339 isn't working right, so we use our own.
-const rfc3339 = "2006-01-02T15:04:05"
+	timeFormat = "2006-01-02T15:04:05"
+)
 
 // Info represents a .trashinfo file.
 type Info struct {
@@ -28,7 +29,7 @@ func NewInfo(r io.Reader) (*Info, error) {
 	}
 
 	info := new(Info)
-	tmp, err := kf.String(tinfo, "Path")
+	tmp, err := kf.String(trashInfo, "Path")
 	if err != nil {
 		return nil, err
 	}
@@ -36,11 +37,11 @@ func NewInfo(r io.Reader) (*Info, error) {
 	if err != nil {
 		return nil, err
 	}
-	tmp, err = kf.String(tinfo, "DeletionDate")
+	tmp, err = kf.String(trashInfo, "DeletionDate")
 	if err != nil {
 		return nil, err
 	}
-	info.DeletionDate, err = time.Parse(rfc3339, tmp)
+	info.DeletionDate, err = time.Parse(timeFormat, tmp)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +53,7 @@ func (i *Info) String() string {
 	return fmt.Sprintf(
 		"[Trash Info]\nPath=%v\nDeletionDate=%v\n",
 		queryEscape(i.Path),
-		i.DeletionDate.Format(rfc3339),
+		i.DeletionDate.Format(timeFormat),
 	)
 }
 

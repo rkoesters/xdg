@@ -32,7 +32,7 @@ func New(r io.Reader) (*KeyFile, error) {
 		switch {
 		case len(line) == 0:
 			// Empty line.
-		case strings.HasPrefix(line, "#"):
+		case line[0] == '#':
 			// Comment.
 		case line[0] == '[' && line[len(line)-1] == ']':
 			// Group header.

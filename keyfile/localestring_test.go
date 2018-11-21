@@ -28,7 +28,7 @@ func TestLocaleString(t *testing.T) {
 		t.Error(err)
 	}
 
-	s, err := kf.LocaleStringWithLocale("Header 1", "Key", &Locale{})
+	s, err := kf.LocaleStringWithLocale("Header 1", "Key", Locale{})
 	if err != nil {
 		t.Error(err)
 	}
@@ -99,7 +99,7 @@ func TestLocaleStringList(t *testing.T) {
 		t.Error(err)
 	}
 
-	s, err := kf.LocaleStringListWithLocale("Header 1", "List", &Locale{})
+	s, err := kf.LocaleStringListWithLocale("Header 1", "List", Locale{})
 	if err != nil {
 		t.Error(err)
 	}

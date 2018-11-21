@@ -14,6 +14,9 @@ addons:
 before_script:
   - xdg-user-dirs-update
   - mkdir -p "$HOME/.local/share/Trash/files"
+  - touch "$HOME/.local/share/Trash/files/file.txt"
+  - mkdir -p "$HOME/.local/share/Trash/info"
+  - printf '[Trash Info]\nPath=%s\nDeletionDate=%s\n' "$HOME/file.txt" "$(date '+%Y-%m-%dT%H:%M:%S')" >"$HOME/.local/share/Trash/info/file.txt.trashinfo"
 
 script:
   - go test -cover ./...
