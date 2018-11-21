@@ -21,7 +21,7 @@ func Stat(s string) (*Info, error) { return hometrash.Stat(s) }
 func Trash(p string) error { return hometrash.Trash(p) }
 
 // Restore moves the file from the trash to its original location.
-func Restore(f string) error { return hometrash.Restore(f) }
+func Restore(s string) error { return hometrash.Restore(s) }
 
 // Erase removes the given file from the trash.
 func Erase(s string) error { return hometrash.Erase(s) }
