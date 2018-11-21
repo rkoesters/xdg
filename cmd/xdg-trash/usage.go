@@ -1,9 +1,20 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
+
+func init() {
+	flag.Usage = usage
+	countCommand.Usage = countUsage
+	emptyCommand.Usage = emptyUsage
+	eraseCommand.Usage = eraseUsage
+	infoCommand.Usage = infoUsage
+	lsCommand.Usage = lsUsage
+	rmCommand.Usage = rmUsage
+}
 
 func usage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], "COMMAND [FLAGS]")

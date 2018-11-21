@@ -31,14 +31,6 @@ func main() {
 	log.SetFlags(0)
 	log.SetPrefix(os.Args[0] + ": ")
 
-	flag.Usage = usage
-	countCommand.Usage = countUsage
-	emptyCommand.Usage = emptyUsage
-	eraseCommand.Usage = eraseUsage
-	infoCommand.Usage = infoUsage
-	lsCommand.Usage = lsUsage
-	rmCommand.Usage = rmUsage
-
 	flag.Parse()
 
 	if flag.NArg() < 1 {
