@@ -67,6 +67,10 @@ func main() {
 	}
 }
 
+var (
+	countQuiet = countCommand.Bool("q", false, "suppress output, set exit status to count")
+)
+
 func countMain() {
 	if countCommand.NArg() != 0 {
 		log.Print("count does not accept arguments")
@@ -79,7 +83,11 @@ func countMain() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(len(files))
+	if *countQuiet {
+		os.Exit(len(files))
+	} else {
+		fmt.Println(len(files))
+	}
 }
 
 func emptyMain() {
