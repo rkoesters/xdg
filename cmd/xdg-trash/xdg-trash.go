@@ -19,12 +19,12 @@ const (
 )
 
 var (
-	countCommand = flag.NewFlagSet(countName, flag.ExitOnError)
-	emptyCommand = flag.NewFlagSet(emptyName, flag.ExitOnError)
-	eraseCommand = flag.NewFlagSet(eraseName, flag.ExitOnError)
-	infoCommand  = flag.NewFlagSet(infoName, flag.ExitOnError)
-	lsCommand    = flag.NewFlagSet(lsName, flag.ExitOnError)
-	rmCommand    = flag.NewFlagSet(rmName, flag.ExitOnError)
+	countFlag = flag.NewFlagSet(countName, flag.ExitOnError)
+	emptyFlag = flag.NewFlagSet(emptyName, flag.ExitOnError)
+	eraseFlag = flag.NewFlagSet(eraseName, flag.ExitOnError)
+	infoFlag  = flag.NewFlagSet(infoName, flag.ExitOnError)
+	lsFlag    = flag.NewFlagSet(lsName, flag.ExitOnError)
+	rmFlag    = flag.NewFlagSet(rmName, flag.ExitOnError)
 )
 
 func main() {
@@ -43,22 +43,22 @@ func main() {
 
 	switch flag.Arg(0) {
 	case countName:
-		countCommand.Parse(flag.Args()[1:])
+		countFlag.Parse(flag.Args()[1:])
 		countMain()
 	case emptyName:
-		emptyCommand.Parse(flag.Args()[1:])
+		emptyFlag.Parse(flag.Args()[1:])
 		emptyMain()
 	case eraseName:
-		eraseCommand.Parse(flag.Args()[1:])
+		eraseFlag.Parse(flag.Args()[1:])
 		eraseMain()
 	case infoName:
-		infoCommand.Parse(flag.Args()[1:])
+		infoFlag.Parse(flag.Args()[1:])
 		infoMain()
 	case lsName:
-		lsCommand.Parse(flag.Args()[1:])
+		lsFlag.Parse(flag.Args()[1:])
 		lsMain()
 	case rmName:
-		rmCommand.Parse(flag.Args()[1:])
+		rmFlag.Parse(flag.Args()[1:])
 		rmMain()
 	default:
 		log.Printf("unknown command '%v'\n", flag.Arg(0))
@@ -68,13 +68,13 @@ func main() {
 }
 
 var (
-	countQuiet = countCommand.Bool("q", false, "suppress output, set exit status to count")
+	countQuiet = countFlag.Bool("q", false, "suppress output, set exit status to count")
 )
 
 func countMain() {
-	if countCommand.NArg() != 0 {
+	if countFlag.NArg() != 0 {
 		log.Print("count does not accept arguments")
-		countCommand.Usage()
+		countFlag.Usage()
 		os.Exit(1)
 	}
 
@@ -91,9 +91,9 @@ func countMain() {
 }
 
 func emptyMain() {
-	if emptyCommand.NArg() != 0 {
+	if emptyFlag.NArg() != 0 {
 		log.Print("empty does not accept arguments")
-		emptyCommand.Usage()
+		emptyFlag.Usage()
 		os.Exit(1)
 	}
 
@@ -104,16 +104,16 @@ func emptyMain() {
 }
 
 var (
-	eraseRecursive = eraseCommand.Bool("r", false, "recursively erase")
+	eraseRecursive = eraseFlag.Bool("r", false, "recursively erase")
 )
 
 func eraseMain() {
-	if eraseCommand.NArg() == 0 {
-		eraseCommand.Usage()
+	if eraseFlag.NArg() == 0 {
+		eraseFlag.Usage()
 		os.Exit(1)
 	}
 
-	for _, file := range eraseCommand.Args() {
+	for _, file := range eraseFlag.Args() {
 		var err error
 
 		if *eraseRecursive {
@@ -129,16 +129,16 @@ func eraseMain() {
 }
 
 var (
-	infoCompact = infoCommand.Bool("1", false, "one file info per line")
+	infoCompact = infoFlag.Bool("1", false, "one file info per line")
 )
 
 func infoMain() {
-	if infoCommand.NArg() == 0 {
-		infoCommand.Usage()
+	if infoFlag.NArg() == 0 {
+		infoFlag.Usage()
 		os.Exit(1)
 	}
 
-	for _, file := range infoCommand.Args() {
+	for _, file := range infoFlag.Args() {
 		info, err := trash.Stat(file)
 		if err != nil {
 			log.Fatal(err)
@@ -155,9 +155,9 @@ func infoMain() {
 }
 
 func lsMain() {
-	if lsCommand.NArg() != 0 {
+	if lsFlag.NArg() != 0 {
 		log.Print("ls does not accept arguments")
-		lsCommand.Usage()
+		lsFlag.Usage()
 		os.Exit(1)
 	}
 
@@ -172,12 +172,12 @@ func lsMain() {
 }
 
 func rmMain() {
-	if rmCommand.NArg() == 0 {
-		rmCommand.Usage()
+	if rmFlag.NArg() == 0 {
+		rmFlag.Usage()
 		os.Exit(1)
 	}
 
-	for _, path := range rmCommand.Args() {
+	for _, path := range rmFlag.Args() {
 		err := trash.Trash(path)
 		if err != nil {
 			log.Fatal(err)

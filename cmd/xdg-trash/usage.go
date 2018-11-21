@@ -8,12 +8,12 @@ import (
 
 func init() {
 	flag.Usage = usage
-	countCommand.Usage = countUsage
-	emptyCommand.Usage = emptyUsage
-	eraseCommand.Usage = eraseUsage
-	infoCommand.Usage = infoUsage
-	lsCommand.Usage = lsUsage
-	rmCommand.Usage = rmUsage
+	countFlag.Usage = countUsage
+	emptyFlag.Usage = emptyUsage
+	eraseFlag.Usage = eraseUsage
+	infoFlag.Usage = infoUsage
+	lsFlag.Usage = lsUsage
+	rmFlag.Usage = rmUsage
 }
 
 func usage() {
@@ -43,35 +43,35 @@ func usage() {
 func countUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], countName, "[FLAGS]")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
-	countCommand.PrintDefaults()
+	countFlag.PrintDefaults()
 }
 
 func emptyUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], emptyName, "[FLAGS]")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
-	emptyCommand.PrintDefaults()
+	emptyFlag.PrintDefaults()
 }
 
 func eraseUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], eraseName, "[FLAGS] FILE...")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
-	eraseCommand.PrintDefaults()
+	eraseFlag.PrintDefaults()
 }
 
 func infoUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], infoName, "[FLAGS] FILE...")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
-	infoCommand.PrintDefaults()
+	infoFlag.PrintDefaults()
 }
 
 func lsUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], lsName, "[FLAGS]")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
-	lsCommand.PrintDefaults()
+	lsFlag.PrintDefaults()
 }
 
 func rmUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], rmName, "[FLAGS] PATH...")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
-	rmCommand.PrintDefaults()
+	rmFlag.PrintDefaults()
 }
