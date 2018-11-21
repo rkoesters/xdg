@@ -62,6 +62,7 @@ func eraseUsage() {
 
 func infoUsage() {
 	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], infoName, "[FLAGS] FILE...")
+	fmt.Fprintln(os.Stderr, "      ", os.Args[0], infoName, "[FLAGS] -a")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
 	infoFlag.PrintDefaults()
 }

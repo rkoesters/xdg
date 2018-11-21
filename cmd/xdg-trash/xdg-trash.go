@@ -138,16 +138,29 @@ func eraseMain() {
 }
 
 var (
+	infoAll     = infoFlag.Bool("a", false, "show info for all files in the trash")
 	infoCompact = infoFlag.Bool("1", false, "one file info per line")
 )
 
 func infoMain() {
-	if infoFlag.NArg() == 0 {
+	if (*infoAll && infoFlag.NArg() != 0) || (!*infoAll && infoFlag.NArg() == 0) {
 		infoFlag.Usage()
 		os.Exit(1)
 	}
 
-	for _, file := range infoFlag.Args() {
+	var files []string
+	var err error
+
+	if *infoAll {
+		files, err = trash.Files()
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		files = infoFlag.Args()
+	}
+
+	for _, file := range files {
 		info, err := trash.Stat(file)
 		if err != nil {
 			log.Fatal(err)
