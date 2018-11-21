@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	tinfo = "Trash Info"
+	trashInfo = "Trash Info"
 
 	timeFormat = "2006-01-02T15:04:05"
 )
@@ -29,7 +29,7 @@ func NewInfo(r io.Reader) (*Info, error) {
 	}
 
 	info := new(Info)
-	tmp, err := kf.String(tinfo, "Path")
+	tmp, err := kf.String(trashInfo, "Path")
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func NewInfo(r io.Reader) (*Info, error) {
 	if err != nil {
 		return nil, err
 	}
-	tmp, err = kf.String(tinfo, "DeletionDate")
+	tmp, err = kf.String(trashInfo, "DeletionDate")
 	if err != nil {
 		return nil, err
 	}
