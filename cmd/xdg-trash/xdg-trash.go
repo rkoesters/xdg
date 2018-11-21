@@ -95,6 +95,10 @@ func emptyMain() {
 	}
 }
 
+var (
+	eraseRecursive = eraseCommand.Bool("r", false, "recursively erase")
+)
+
 func eraseMain() {
 	if eraseCommand.NArg() == 0 {
 		eraseCommand.Usage()
@@ -102,7 +106,14 @@ func eraseMain() {
 	}
 
 	for _, file := range eraseCommand.Args() {
-		err := trash.Erase(file)
+		var err error
+
+		if *eraseRecursive {
+			err = trash.EraseAll(file)
+		} else {
+			err = trash.Erase(file)
+		}
+
 		if err != nil {
 			log.Fatal(err)
 		}
