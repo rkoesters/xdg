@@ -75,7 +75,8 @@ func lsUsage() {
 }
 
 func restoreUsage() {
-	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], restoreName, "[FLAGS] FILE...")
+	fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], restoreName, "[FLAGS] FILE [DESTINATION]")
+	fmt.Fprintln(os.Stderr, "      ", os.Args[0], restoreName, "[FLAGS] FILE... DIRECTORY")
 	fmt.Fprintln(os.Stderr, "FLAGS:")
 	restoreFlag.PrintDefaults()
 }

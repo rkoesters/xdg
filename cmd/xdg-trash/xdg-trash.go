@@ -8,6 +8,7 @@ import (
 	"github.com/rkoesters/xdg/trash"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -185,8 +186,31 @@ func restoreMain() {
 		os.Exit(1)
 	}
 
-	for _, file := range restoreFlag.Args() {
-		err := trash.Restore(file)
+	args := restoreFlag.Args()
+
+	var dest *string
+
+	if len(args) > 1 {
+		d := args[len(args)-1]
+		dest = &d
+		args = args[:len(args)-1]
+	}
+
+	for i := 0; i < len(args); i++ {
+		var err error
+
+		file := args[i]
+
+		if dest != nil {
+			if len(args) > 1 {
+				err = trash.RestoreTo(file, filepath.Join(*dest, file))
+			} else {
+				err = trash.RestoreTo(file, *dest)
+			}
+		} else {
+			err = trash.Restore(file)
+		}
+
 		if err != nil {
 			log.Fatal(err)
 		}
