@@ -41,7 +41,7 @@ func NewInfo(r io.Reader) (*Info, error) {
 	if err != nil {
 		return nil, err
 	}
-	info.DeletionDate, err = time.Parse(timeFormat, tmp)
+	info.DeletionDate, err = time.ParseInLocation(timeFormat, tmp, time.Local)
 	if err != nil {
 		return nil, err
 	}
