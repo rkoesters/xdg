@@ -39,109 +39,121 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Parse the command.
+	log.SetPrefix(os.Args[0] + " " + flag.Arg(0) + ": ")
+
 	switch flag.Arg(0) {
 	case countName:
 		countCommand.Parse(flag.Args()[1:])
+		countMain()
 	case emptyName:
 		emptyCommand.Parse(flag.Args()[1:])
+		emptyMain()
 	case eraseName:
 		eraseCommand.Parse(flag.Args()[1:])
+		eraseMain()
 	case infoName:
 		infoCommand.Parse(flag.Args()[1:])
+		infoMain()
 	case lsName:
 		lsCommand.Parse(flag.Args()[1:])
+		lsMain()
 	case rmName:
 		rmCommand.Parse(flag.Args()[1:])
+		rmMain()
 	default:
 		log.Printf("unknown command '%v'\n", flag.Arg(0))
 		flag.Usage()
 		os.Exit(1)
 	}
-	log.SetPrefix(os.Args[0] + " " + flag.Arg(0) + ": ")
+}
 
-	// Run the command.
-	switch {
-	case countCommand.Parsed():
-		if countCommand.NArg() != 0 {
-			log.Print("count does not accept arguments")
-			countCommand.Usage()
-			os.Exit(1)
+func countMain() {
+	if countCommand.NArg() != 0 {
+		log.Print("count does not accept arguments")
+		countCommand.Usage()
+		os.Exit(1)
+	}
+
+	files, err := trash.Files()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(len(files))
+}
+
+func emptyMain() {
+	if emptyCommand.NArg() != 0 {
+		log.Print("empty does not accept arguments")
+		emptyCommand.Usage()
+		os.Exit(1)
+	}
+
+	err := trash.Empty()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func eraseMain() {
+	if eraseCommand.NArg() == 0 {
+		eraseCommand.Usage()
+		os.Exit(1)
+	}
+
+	for _, file := range eraseCommand.Args() {
+		err := trash.Erase(file)
+		if err != nil {
+			log.Fatal(err)
 		}
+	}
+}
 
-		files, err := trash.Files()
+func infoMain() {
+	if infoCommand.NArg() == 0 {
+		infoCommand.Usage()
+		os.Exit(1)
+	}
+
+	for _, file := range infoCommand.Args() {
+		info, err := trash.Stat(file)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		fmt.Println(len(files))
-	case emptyCommand.Parsed():
-		if emptyCommand.NArg() != 0 {
-			log.Print("empty does not accept arguments")
-			emptyCommand.Usage()
-			os.Exit(1)
-		}
+		fmt.Println("File:", file)
+		fmt.Println("Original Path:", info.Path)
+		fmt.Println("Deletion Date:", info.DeletionDate.Format(time.RFC822))
+	}
+}
 
-		err := trash.Empty()
+func lsMain() {
+	if lsCommand.NArg() != 0 {
+		log.Print("ls does not accept arguments")
+		lsCommand.Usage()
+		os.Exit(1)
+	}
+
+	files, err := trash.Files()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, fname := range files {
+		fmt.Println(fname)
+	}
+}
+
+func rmMain() {
+	if rmCommand.NArg() == 0 {
+		rmCommand.Usage()
+		os.Exit(1)
+	}
+
+	for _, path := range rmCommand.Args() {
+		err := trash.Trash(path)
 		if err != nil {
 			log.Fatal(err)
 		}
-	case eraseCommand.Parsed():
-		if eraseCommand.NArg() == 0 {
-			eraseCommand.Usage()
-			os.Exit(1)
-		}
-
-		for _, file := range eraseCommand.Args() {
-			err := trash.Erase(file)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-	case infoCommand.Parsed():
-		if infoCommand.NArg() == 0 {
-			infoCommand.Usage()
-			os.Exit(1)
-		}
-
-		for _, file := range infoCommand.Args() {
-			info, err := trash.Stat(file)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fmt.Println("File:", file)
-			fmt.Println("Original Path:", info.Path)
-			fmt.Println("Deletion Date:", info.DeletionDate.Format(time.RFC822))
-		}
-	case lsCommand.Parsed():
-		if lsCommand.NArg() != 0 {
-			log.Print("ls does not accept arguments")
-			lsCommand.Usage()
-			os.Exit(1)
-		}
-
-		files, err := trash.Files()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		for _, fname := range files {
-			fmt.Println(fname)
-		}
-	case rmCommand.Parsed():
-		if rmCommand.NArg() == 0 {
-			rmCommand.Usage()
-			os.Exit(1)
-		}
-
-		for _, path := range rmCommand.Args() {
-			err := trash.Trash(path)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-	default:
-		panic("command parsed but not run")
 	}
 }
