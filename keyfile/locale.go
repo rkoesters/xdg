@@ -113,7 +113,7 @@ func ParseLocale(s string) (Locale, error) {
 
 // String returns the given locale as a formatted string. The returned
 // string is in the same format expected by ParseLocale.
-func (l *Locale) String() string {
+func (l Locale) String() string {
 	var buf bytes.Buffer
 
 	buf.WriteString(l.lang)
@@ -138,15 +138,15 @@ func (l *Locale) String() string {
 
 // Variants returns a sorted slice of *Locales that should be checked
 // for when resolving a localestring.
-func (l *Locale) Variants() []*Locale {
-	variants := make([]*Locale, 0, 4)
+func (l *Locale) Variants() []Locale {
+	variants := make([]Locale, 0, 4)
 
 	hasLang := l.lang != ""
 	hasCountry := l.country != ""
 	hasModifier := l.modifier != ""
 
 	if hasLang && hasCountry && hasModifier {
-		variants = append(variants, &Locale{
+		variants = append(variants, Locale{
 			lang:     l.lang,
 			country:  l.country,
 			modifier: l.modifier,
@@ -154,21 +154,21 @@ func (l *Locale) Variants() []*Locale {
 	}
 
 	if hasLang && hasCountry {
-		variants = append(variants, &Locale{
+		variants = append(variants, Locale{
 			lang:    l.lang,
 			country: l.country,
 		})
 	}
 
 	if hasLang && hasModifier {
-		variants = append(variants, &Locale{
+		variants = append(variants, Locale{
 			lang:     l.lang,
 			modifier: l.modifier,
 		})
 	}
 
 	if hasLang {
-		variants = append(variants, &Locale{
+		variants = append(variants, Locale{
 			lang: l.lang,
 		})
 	}
