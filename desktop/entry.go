@@ -312,7 +312,7 @@ func NewFromFile(path string) (*Entry, error) {
 
 // NewFromFileWithLocale creates an Entry from the file given by path
 // with locale l.
-func NewFromFileWithLocale(path string, l *keyfile.Locale) (*Entry, error) {
+func NewFromFileWithLocale(path string, l keyfile.Locale) (*Entry, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
