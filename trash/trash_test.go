@@ -27,3 +27,11 @@ func TestStat(t *testing.T) {
 		t.Log(info)
 	}
 }
+
+func TestIsEmpty(t *testing.T) {
+	// We can't expect a value for IsEmpty because it depends on the
+	// contents of the user's trash which could be empty or not. So
+	// we just call the function to make sure it doesn't panic or
+	// anything extreme.
+	t.Logf("IsEmpty()=%v", IsEmpty())
+}
