@@ -79,12 +79,17 @@ func (d *Dir) Restore(s string) error {
 		return err
 	}
 
-	_, err = os.Stat(info.Path)
+	return d.RestoreTo(s, info.Path)
+}
+
+// RestoreTo moves the file from the trash to the specified location.
+func (d *Dir) RestoreTo(s, p string) error {
+	_, err := os.Stat(p)
 	if err == nil {
 		return os.ErrExist
 	}
 
-	return os.Rename(d.file2path(s), info.Path)
+	return os.Rename(d.file2path(s), p)
 }
 
 func (d *Dir) exists(s string) bool {

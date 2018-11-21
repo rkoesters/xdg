@@ -23,6 +23,9 @@ func Trash(p string) error { return hometrash.Trash(p) }
 // Restore moves the file from the trash to its original location.
 func Restore(s string) error { return hometrash.Restore(s) }
 
+// RestoreTo moves the file from the trash to the specified location.
+func RestoreTo(s, p string) error { return hometrash.RestoreTo(s, p) }
+
 // Erase removes the given file from the trash.
 func Erase(s string) error { return hometrash.Erase(s) }
 
