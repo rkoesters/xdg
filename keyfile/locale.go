@@ -136,9 +136,9 @@ func (l Locale) String() string {
 	return buf.String()
 }
 
-// Variants returns a sorted slice of *Locales that should be checked
-// for when resolving a localestring.
-func (l *Locale) Variants() []Locale {
+// Variants returns a sorted slice of Locales that should be checked for
+// when resolving a localestring.
+func (l Locale) Variants() []Locale {
 	variants := make([]Locale, 0, 4)
 
 	hasLang := l.lang != ""
