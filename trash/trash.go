@@ -72,6 +72,21 @@ func (d *Dir) Trash(p string) error {
 	return os.Rename(p, d.file2path(tname))
 }
 
+// Restore moves the file from the trash to its original location.
+func (d *Dir) Restore(f string) error {
+	info, err := d.Stat(f)
+	if err != nil {
+		return err
+	}
+
+	_, err = os.Stat(info.Path)
+	if err == nil {
+		return os.ErrExist
+	}
+
+	return os.Rename(d.file2path(f), info.Path)
+}
+
 func (d *Dir) exists(s string) bool {
 	_, err := os.Stat(d.file2path(s))
 	if os.IsNotExist(err) {
