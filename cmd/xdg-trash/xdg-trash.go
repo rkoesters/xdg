@@ -61,6 +61,7 @@ func main() {
 		rmFlag.Parse(flag.Args()[1:])
 		rmMain()
 	default:
+		log.SetPrefix(os.Args[0] + ": ")
 		log.Printf("unknown command '%v'\n", flag.Arg(0))
 		flag.Usage()
 		os.Exit(1)
