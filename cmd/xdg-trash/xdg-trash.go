@@ -15,7 +15,7 @@ const (
 	eraseName = "erase"
 	infoName  = "info"
 	lsName    = "ls"
-	trashName = "trash"
+	rmName    = "rm"
 )
 
 var (
@@ -24,7 +24,7 @@ var (
 	eraseCommand = flag.NewFlagSet(eraseName, flag.ExitOnError)
 	infoCommand  = flag.NewFlagSet(infoName, flag.ExitOnError)
 	lsCommand    = flag.NewFlagSet(lsName, flag.ExitOnError)
-	trashCommand = flag.NewFlagSet(trashName, flag.ExitOnError)
+	rmCommand    = flag.NewFlagSet(rmName, flag.ExitOnError)
 )
 
 func main() {
@@ -52,8 +52,8 @@ func main() {
 		infoCommand.Parse(flag.Args()[1:])
 	case lsName:
 		lsCommand.Parse(flag.Args()[1:])
-	case trashName:
-		trashCommand.Parse(flag.Args()[1:])
+	case rmName:
+		rmCommand.Parse(flag.Args()[1:])
 	default:
 		log.Printf("unknown command '%v'\n", flag.Arg(0))
 		flag.Usage()
@@ -124,13 +124,13 @@ func main() {
 		for _, fname := range files {
 			fmt.Println(fname)
 		}
-	case trashCommand.Parsed():
-		if trashCommand.NArg() == 0 {
-			trashCommand.Usage()
+	case rmCommand.Parsed():
+		if rmCommand.NArg() == 0 {
+			rmCommand.Usage()
 			os.Exit(1)
 		}
 
-		for _, path := range trashCommand.Args() {
+		for _, path := range rmCommand.Args() {
 			err := trash.Trash(path)
 			if err != nil {
 				log.Fatal(err)

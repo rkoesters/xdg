@@ -23,7 +23,7 @@ func usage() {
 	fmt.Fprintln(os.Stderr, "\tls")
 	fmt.Fprintln(os.Stderr, "\t\tlist the items in the trash")
 	fmt.Fprintln(os.Stderr)
-	fmt.Fprintln(os.Stderr, "\ttrash")
+	fmt.Fprintln(os.Stderr, "\trm")
 	fmt.Fprintln(os.Stderr, "\t\tmove a file to the trash")
 	fmt.Fprintln(os.Stderr)
 	fmt.Fprintln(os.Stderr, "For command help, run:", os.Args[0], "COMMAND -help")
