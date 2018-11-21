@@ -59,7 +59,7 @@ func main() {
 		flag.Usage()
 		os.Exit(1)
 	}
-	log.SetPrefix(flag.Arg(0) + ": ")
+	log.SetPrefix(os.Args[0] + " " + flag.Arg(0) + ": ")
 
 	// Run the command.
 	switch {
