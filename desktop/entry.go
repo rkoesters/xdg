@@ -131,7 +131,7 @@ func New(r io.Reader) (*Entry, error) {
 
 // NewWithLocale reads a desktop file from r and returns an Entry that
 // represents the desktop file using the given locale l.
-func NewWithLocale(r io.Reader, l *keyfile.Locale) (*Entry, error) {
+func NewWithLocale(r io.Reader, l keyfile.Locale) (*Entry, error) {
 	kf, err := keyfile.New(r)
 	if err != nil {
 		return nil, err

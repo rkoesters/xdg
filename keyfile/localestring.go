@@ -12,7 +12,7 @@ func (kf *KeyFile) LocaleString(g, k string) (string, error) {
 
 // LocaleStringWithLocale returns the value for group 'g', key 'k', and
 // locale 'l'.
-func (kf *KeyFile) LocaleStringWithLocale(g, k string, l *Locale) (string, error) {
+func (kf *KeyFile) LocaleStringWithLocale(g, k string, l Locale) (string, error) {
 	for _, locale := range l.Variants() {
 		key := fmt.Sprintf("%v[%v]", k, locale)
 		if kf.KeyExists(g, key) {
@@ -30,7 +30,7 @@ func (kf *KeyFile) LocaleStringList(g, k string) ([]string, error) {
 
 // LocaleStringListWithLocale returns a slice of strings for group 'g',
 // key 'k', and locale 'l'.
-func (kf *KeyFile) LocaleStringListWithLocale(g, k string, l *Locale) ([]string, error) {
+func (kf *KeyFile) LocaleStringListWithLocale(g, k string, l Locale) ([]string, error) {
 	for _, locale := range l.Variants() {
 		key := fmt.Sprintf("%v[%v]", k, locale)
 		if kf.KeyExists(g, key) {

@@ -7,7 +7,7 @@ import (
 
 func TestParseLocale(t *testing.T) {
 	var localeStr string
-	var locale *Locale
+	var locale Locale
 	var err error
 
 	localeStr = ""
@@ -66,11 +66,7 @@ func TestParseLocale(t *testing.T) {
 }
 
 func TestDefaultLocale(t *testing.T) {
-	locale := DefaultLocale()
-	t.Log(locale)
-	if locale == nil {
-		t.Fail()
-	}
+	t.Log(DefaultLocale())
 }
 
 func TestBadLocale(t *testing.T) {

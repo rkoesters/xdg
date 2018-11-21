@@ -17,25 +17,27 @@ type Locale struct {
 var defaultLocale *Locale
 
 // DefaultLocale returns the locale specified by the environment.
-func DefaultLocale() *Locale {
+func DefaultLocale() Locale {
 	if defaultLocale == nil {
-		var val string
-		var err error
-
-		if val = os.Getenv("LANGUAGE"); val != "" {
-			defaultLocale, err = ParseLocale(val)
-		} else if val = os.Getenv("LC_ALL"); val != "" {
-			defaultLocale, err = ParseLocale(val)
-		} else if val = os.Getenv("LC_MESSAGES"); val != "" {
-			defaultLocale, err = ParseLocale(val)
-		} else if val = os.Getenv("LANG"); val != "" {
-			defaultLocale, err = ParseLocale(val)
+		val := os.Getenv("LANGUAGE")
+		if val == "" {
+			val = os.Getenv("LC_ALL")
+			if val == "" {
+				val = os.Getenv("LC_MESSAGES")
+				if val == "" {
+					val = os.Getenv("LANG")
+				}
+			}
 		}
-		if err != nil || defaultLocale == nil {
+
+		l, err := ParseLocale(val)
+		if err == nil {
+			defaultLocale = &l
+		} else {
 			defaultLocale = &Locale{}
 		}
 	}
-	return defaultLocale
+	return *defaultLocale
 }
 
 // ErrBadLocaleFormat is returned by ParseLocale when the given string
@@ -49,17 +51,17 @@ var ErrBadLocaleFormat = errors.New("bad locale format")
 // where "_COUNTRY", ".ENCODING", and "@MODIFIER" can be omitted. A
 // blank string, "C", and "POSIX" are special cases that evaluate to a
 // blank Locale.
-func ParseLocale(s string) (*Locale, error) {
+func ParseLocale(s string) (Locale, error) {
 	// A blank string, "C", and "POSIX" are valid locales, they
 	// evaluate to a blank Locale.
 	if s == "" || s == "C" || s == "POSIX" {
-		return &Locale{}, nil
+		return Locale{}, nil
 	}
 
 	var buf bytes.Buffer
+	var l Locale
 
 	i := 0
-	l := new(Locale)
 
 	// lang
 	for i < len(s) && s[i] != '_' && s[i] != '.' && s[i] != '@' {
@@ -71,7 +73,7 @@ func ParseLocale(s string) (*Locale, error) {
 
 	// lang is required.
 	if l.lang == "" {
-		return nil, ErrBadLocaleFormat
+		return Locale{}, ErrBadLocaleFormat
 	}
 
 	// COUNTRY
