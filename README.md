@@ -3,11 +3,15 @@ xdg
 
 Package xdg provides access to the XDG specs.
 
+[![GoDoc](https://godoc.org/github.com/rkoesters/xdg?status.svg)](https://godoc.org/github.com/rkoesters/xdg)
 [![Build Status](https://travis-ci.org/rkoesters/xdg.svg?branch=master)](https://travis-ci.org/rkoesters/xdg)
 [![Go Report Card](https://goreportcard.com/badge/github.com/rkoesters/xdg)](https://goreportcard.com/report/github.com/rkoesters/xdg)
 
 Documentation
 -------------
+
+Documentation is available via godoc. Here are direct links to the
+documentation pages for each package:
 
 * [xdg](https://godoc.org/github.com/rkoesters/xdg) - Provides xdg.Open
   function to call `xdg-open` command.
