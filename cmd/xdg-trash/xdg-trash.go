@@ -32,6 +32,13 @@ func main() {
 	log.SetPrefix(os.Args[0] + ": ")
 
 	flag.Usage = usage
+	countCommand.Usage = countUsage
+	emptyCommand.Usage = emptyUsage
+	eraseCommand.Usage = eraseUsage
+	infoCommand.Usage = infoUsage
+	lsCommand.Usage = lsUsage
+	rmCommand.Usage = rmUsage
+
 	flag.Parse()
 
 	if flag.NArg() < 1 {
@@ -65,7 +72,9 @@ func main() {
 	switch {
 	case countCommand.Parsed():
 		if countCommand.NArg() != 0 {
-			log.Fatal("count does not accept arguments")
+			log.Print("count does not accept arguments")
+			countCommand.Usage()
+			os.Exit(1)
 		}
 
 		files, err := trash.Files()
@@ -76,7 +85,9 @@ func main() {
 		fmt.Println(len(files))
 	case emptyCommand.Parsed():
 		if emptyCommand.NArg() != 0 {
-			log.Fatal("empty does not accept arguments")
+			log.Print("empty does not accept arguments")
+			emptyCommand.Usage()
+			os.Exit(1)
 		}
 
 		err := trash.Empty()
@@ -113,7 +124,9 @@ func main() {
 		}
 	case lsCommand.Parsed():
 		if lsCommand.NArg() != 0 {
-			log.Fatal("ls does not accept arguments")
+			log.Print("ls does not accept arguments")
+			lsCommand.Usage()
+			os.Exit(1)
 		}
 
 		files, err := trash.Files()
