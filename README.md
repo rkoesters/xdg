@@ -1,7 +1,7 @@
 xdg
 ===
 
-Package xdg provides access to the XDG specs.
+Package xdg provides access to the FreeDesktop.org (XDG) specs.
 
 [![GoDoc](https://godoc.org/github.com/rkoesters/xdg?status.svg)](https://godoc.org/github.com/rkoesters/xdg)
 [![Build Status](https://travis-ci.org/rkoesters/xdg.svg?branch=master)](https://travis-ci.org/rkoesters/xdg)
