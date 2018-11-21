@@ -121,7 +121,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		for _, path := range eraseCommand.Args() {
+		for _, path := range trashCommand.Args() {
 			err := trash.Trash(path)
 			if err != nil {
 				log.Fatal(err)
