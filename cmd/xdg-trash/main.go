@@ -167,7 +167,7 @@ func infoMain() {
 		}
 
 		if *infoCompact {
-			fmt.Printf("%v:%v:%v\n", file, info.Path, info.DeletionDate.Format(time.RFC3339))
+			fmt.Print(file, ":", info.Path, ":", info.DeletionDate.Format(time.RFC3339), "\n")
 		} else {
 			fmt.Println("File:", file)
 			fmt.Println("Original Path:", info.Path)
