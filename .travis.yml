@@ -1,9 +1,7 @@
 language: go
 
 go:
-  - "1.6.x"  # ubuntu 16.04
-  - "1.7.x"  # debian stable
-  - "1.10.x" # ubuntu 18.04
+  - "1.13.x" # ubuntu 20.04
   - "1.x"    # latest release
 
 addons:
