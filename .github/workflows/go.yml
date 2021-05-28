@@ -30,6 +30,25 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y -q golint
 
+      - name: Set up GITHUB_ENV
+        run: >
+          go version |
+          sed 's/^go version /GOVERSION=/'|
+          tr ' /' '-' >>$GITHUB_ENV
+
+      - name: Set up Go module cache
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ env.GOVERSION }}-module-cache-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ env.GOVERSION }}-module-cache-
+
+      - name: Set up Go build cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/go-build
+          key: ${{ env.GOVERSION }}-build-cache
+
       - name: Set up user directories
         run: xdg-user-dirs-update
 
