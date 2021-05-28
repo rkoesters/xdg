@@ -1,0 +1,40 @@
+---
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        go:
+          - 1.11.x  # debian buster
+          - 1.13.x  # ubuntu focal
+          - 1.x     # latest
+
+    name: Go ${{ matrix.go }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+
+      - name: Set up user directories
+        run: xdg-user-dirs-update
+
+      - name: Set up trash
+        run: >
+          mkdir -p "$HOME/.local/share/Trash/files"
+          touch "$HOME/.local/share/Trash/files/file.txt"
+          mkdir -p "$HOME/.local/share/Trash/info"
+          printf '[Trash Info]\nPath=%s\nDeletionDate=%s\n' "$HOME/file.txt" "$(date '+%Y-%m-%dT%H:%M:%S')" >"$HOME/.local/share/Trash/info/file.txt.trashinfo"
+
+      - run: go build -v github.com/rkoesters/xdg/...
+      - run: go test -cover github.com/rkoesters/xdg/...
+      - run: go vet github.com/rkoesters/xdg/...
