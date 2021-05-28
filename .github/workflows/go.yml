@@ -33,7 +33,7 @@ jobs:
       - name: Set up GITHUB_ENV
         run: >
           go version |
-          sed 's/^go version /GOVERSION=/'|
+          sed 's/^go version /GOVERSION=/' |
           tr ' /' '-' >>$GITHUB_ENV
 
       - name: Set up Go module cache
