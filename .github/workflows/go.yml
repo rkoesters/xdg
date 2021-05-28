@@ -36,12 +36,16 @@ jobs:
           sed 's/^go version /GOVERSION=/' |
           tr ' /' '-' >>$GITHUB_ENV
 
+          go env GOPATH | sed 's/^/GOPATH=/' >>$GITHUB_ENV
+
+          go env GOCACHE | sed 's/^/GOCACHE=/' >>$GITHUB_ENV
+
       - name: Set up Go cache
         uses: actions/cache@v2
         with:
           path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
+            ${{ env.GOCACHE }}
+            ${{ env.GOPATH }}/pkg/mod
           key: ${{ env.GOVERSION }}-cache-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ env.GOVERSION }}-cache-
 
