@@ -59,7 +59,7 @@ jobs:
           restore-keys: >
             ${{ github.workflow }}-${{ runner.os }}-${{ env.GOVERSION }}-
 
-      - run: go build -v github.com/rkoesters/xkcd/...
+      - run: go build -v github.com/rkoesters/xdg/...
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
