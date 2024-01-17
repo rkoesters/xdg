@@ -42,7 +42,7 @@ jobs:
           go env GOCACHE | sed 's/^/GOCACHE=/' >>$GITHUB_ENV
 
       - name: Set up Go cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ${{ env.GOCACHE }}
