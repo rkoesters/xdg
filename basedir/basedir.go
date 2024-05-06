@@ -17,6 +17,10 @@ var (
 	// should be written.
 	DataHome string
 
+	// StateHome is the path to the directory where log or history files
+	// should be written
+	StateHome string
+
 	// ConfigHome is the path to the directory where user
 	// configuration files should be written.
 	ConfigHome string
@@ -50,6 +54,7 @@ func init() {
 	}
 
 	DataHome = getPath("XDG_DATA_HOME", filepath.Join(Home, ".local/share"))
+	StateHome = getPath("XDG_STATE_HOME", filepath.Join(Home, ".local/state"))
 	ConfigHome = getPath("XDG_CONFIG_HOME", filepath.Join(Home, ".config"))
 	CacheHome = getPath("XDG_CACHE_HOME", filepath.Join(Home, ".cache"))
 	RuntimeDir = getPath("XDG_RUNTIME_DIR", CacheHome)
