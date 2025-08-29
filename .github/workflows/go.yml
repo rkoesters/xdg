@@ -26,11 +26,6 @@ jobs:
         with:
           go-version: ${{ matrix.go }}
 
-      - name: Set up build dependencies
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y -q golint
-
       - name: Set up GITHUB_ENV
         run: >
           go version |
@@ -60,7 +55,6 @@ jobs:
           mkdir -p "$HOME/.local/share/Trash/info"
           printf '[Trash Info]\nPath=%s\nDeletionDate=%s\n' "$HOME/file.txt" "$(date '+%Y-%m-%dT%H:%M:%S')" >"$HOME/.local/share/Trash/info/file.txt.trashinfo"
 
-      - run: golint github.com/rkoesters/xdg/...
       - run: go build -v github.com/rkoesters/xdg/...
       - run: go test -v -cover github.com/rkoesters/xdg/...
       - run: go vet -v github.com/rkoesters/xdg/...
